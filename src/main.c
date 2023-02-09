@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <memory.h>
-#define WIDTH 256
-#define HEIGHT 256
+#include <math.h> //sqrt() pow() hypot()
+#define WIDTH 512
+#define HEIGHT 512
+#define VIEWPORT_WIDTH 10
+#define VIEWPORT_HEIGHT 10
 
 mlx_image_t	*g_img;
 
@@ -25,142 +28,211 @@ void	hook(void *param)
 		g_img->instances[0].x += 5;
 }
 
-void draw_camera_and_circle(int x, int y, int x_mid, int y_mid, int size, \
-	mlx_image_t *g_img)
+typedef struct sphere_struct
 {
-	float FOV = 0.75;
+	double center[3];
+	double radius;
+	unsigned colour;
+}	t_sphere ;
 
-	while (y < HEIGHT)
-	{
-		while (x < WIDTH)
-		{
-			if ((y - HEIGHT/2) > -FOV*x && (y - HEIGHT/2) < FOV*x)
-				mlx_put_pixel(g_img, x, y, 0xFEDD00FF);
-			if (((x - x_mid) * (x - x_mid) + (y - y_mid) * (y - y_mid)) <= size)
-				mlx_put_pixel(g_img, x, y, 0x74D1EAFF);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
+
+
+double *abc_formula(a, b, c)
+{
+	double joep = (b * b - (4 * a * c));
+	if (joep < 0)
+		return (NULL);
+	double *hit = malloc(sizeof(double) * 2);
+	hit[0] = (-b + sqrt(joep)) / (2 * a);
+	hit[1] = (-b - sqrt(joep)) / (2 * a);
+	return (hit);
 }
 
-void shadows(int x, int y, int x_mid, int y_mid, \
-	int size, mlx_image_t *g_img)
+double dot(double *a, double *b, int arraysize)
 {
-	float ray_x = 0;
-	float ray_y;
-
-	ray_y = (float)(y - y_mid) / (float)x;
-	while ((ray_x < WIDTH) && (((ray_x - x) * ray_y + y) > 0) && \
-	(((ray_x - x)* ray_y + y) < HEIGHT))
+	int i = 0;
+	double result = 0.0;
+	while (i < arraysize)
 	{
-		if ((ray_x - x > 0) && (((ray_x - x_mid) * \
-		(ray_x - x_mid) + ((ray_x - x) * ray_y + y - y_mid) * \
-		((ray_x - x) * ray_y + y - y_mid)) > size))
-			mlx_put_pixel(g_img, ray_x, (ray_x - x) * ray_y + y, 0x440099FF);
-		ray_x++;
+		result += a[i] * b[i];
+		i++;
 	}
+	// printf("result = %f\n", result);
+	return (result);
 }
 
-void intersect_objects(int x, int y, int x_mid, int y_mid, int size, \
-	mlx_image_t *g_img)
+double *intersect(t_sphere ball, double x, double y)
 {
-	float FOV = 0.75;
+	double *D = malloc(sizeof(double) * 3);
+	D[0] = x * ((double)VIEWPORT_WIDTH / (double)WIDTH);
+	D[1] = y * ((double)VIEWPORT_WIDTH / (double)WIDTH);
+	D[2] = -20;
+	double r = ball.radius;
+	double *hitpoints;
+	double *CO;
+	CO = ball.center;
+	double a = dot(D, D, 3);
+	double b = 2 * dot(CO, D, 3);
+	double c = dot(CO, CO, 3) - r*r;
+	// printf("%f %f %f\n", a, b, c);
+	hitpoints = abc_formula(a, b, c);
+	// if (hitpoints[0] > 0 || hitpoints[1] > 0)
+	// printf("%f and %f\n", hitpoints[0], hitpoints[1]);
+	return (hitpoints);
+}
 
-	while (y < HEIGHT)
+unsigned trace_Ray(t_sphere *balls, double x, double y)
+{
+	double t_max;
+	double t_min = 10000;
+	int i = 0;
+	double *t = malloc(sizeof(double) * 2);
+	unsigned colour = 0xFFFF00FF;
+	while (i < 3)
 	{
-		while (x < WIDTH)
+		t = intersect(balls[i], x, y);
+		if (t != NULL)
 		{
-			if (((y > (-FOV*x + y_mid)) && (y < (FOV*x + y_mid))) && \
-			(((x - x_mid) * (x - x_mid) + (y - y_mid) * \
-				(y - y_mid)) <= size))
+			if (t[0] < t_min)
 			{
-				mlx_put_pixel(g_img, x, y, 0xe40909FF);
-				shadows(x, y, x_mid, y_mid, size, g_img);
-				break ;
+				t_min = t[0];
+				colour = balls[i].colour;
 			}
-			x++;
+			if (t[1] < t_min)
+			{
+				t_min = t[1];
+				colour = balls[i].colour;
+			}
 		}
-		x = 0;
-		y++;
+			i++;
 	}
+	return (colour);
 }
 
-void lazor(int x_mid, int y_mid, int size, mlx_image_t *g_img)
-{
-	float FOV = 0.75;
-	float x = 0;
-	float angle = .2;
-	float hitpoint;
-	while (x < WIDTH)
-	{
-		if ((angle * x + y_mid > 0) && (angle * x + y_mid < HEIGHT))
-			mlx_put_pixel(g_img, x, angle * x + y_mid, 0xe40909FF);
-		if (((angle * x + y_mid > (-FOV*x + y_mid)) && (angle * x + y_mid < \
-			(FOV*x + y_mid))) && (((x - x_mid) * (x - x_mid) + (angle * x) * \
-				(angle * x)) <= size))
-			break ;
-		x++;
-	}
-	hitpoint = angle * x + y_mid;
-	float saved_x = x;
-	float diff_y = y_mid - hitpoint;
-	float diff_x = x_mid - x;
-	float new_angle = diff_y / diff_x;
-	float whatevs = (new_angle * x_mid - y_mid) * -1;
-	x = 0;
-	while (x < WIDTH / 2)
-	{
-		if ((new_angle * x + whatevs > 0) && (new_angle * x + whatevs < HEIGHT))
-		mlx_put_pixel(g_img, x, new_angle * x + whatevs, 0xe40909FF);
-		x++;
-	}
-	float diff_c = diff_x * diff_x + diff_y * diff_y;
-	diff_x = diff_x / sqrt(diff_c);
-	diff_y = diff_y / sqrt(diff_c);
-	float new_vecca_x;
-	float new_vecca_y;
-	// (1, angle) -2 * (diff_x, diff_y) * (diff_x * 1, diff_y * angle)
-	new_vecca_x = 1 -2 * diff_x * (diff_x + diff_y * angle);
-	new_vecca_y = angle -2 * diff_y * (diff_y * angle + diff_x);
-	float new_vec_vec = new_vecca_y / new_vecca_x;
-	float another = (saved_x * new_vec_vec -hitpoint) * -1;
-	x = 0;
-	while (x < WIDTH)
-	{
-		if (new_vecca_y > 0)
-		{
-			if (((x * new_vec_vec) + another > hitpoint) && \
-				((x * new_vec_vec) + another < HEIGHT))
-			mlx_put_pixel(g_img, x, (x * new_vec_vec) + another, 0xe40909FF);
-		}
-		if (new_vecca_y < 0)
-		{
-			if (((x * new_vec_vec) + another > 0) && \
-				((x * new_vec_vec) + another < hitpoint))
-			mlx_put_pixel(g_img, x, (x * new_vec_vec) + another, 0xe40909FF);
-		}
-		x++;
-	}
-}
 
 int32_t	main(void)
 {
-	int y_mid = HEIGHT/2;
-	int x_mid = WIDTH/2;
-	int size = 2500;
-	float FOV = 0.75;
-	int x = 0;
-	int y = 0;
 	mlx_t	*mlx;
 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
 	mlx_image_t	*g_img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(mlx, g_img, 0, 0);
-	draw_camera_and_circle(x, y, x_mid, y_mid, size, g_img);
-	intersect_objects(x, y, x_mid, y_mid, size, g_img);
-	lazor(x_mid, y_mid, size, g_img);
+	// double x = -WIDTH/2;
+	// double y = -HEIGHT/2;
+	double x = 0;
+	double y = 0;
+	unsigned colour;
+
+	t_sphere red_ball;
+	red_ball.center[0] = 5;
+	red_ball.center[1] = 5;
+	red_ball.center[2] = 60;
+	red_ball.radius = 4.0;
+	red_ball.colour = 0xFF0000FF;
+	t_sphere blue_ball;
+	blue_ball.center[0] = 0;
+	blue_ball.center[1] = 0;
+	blue_ball.center[2] = 66;
+	blue_ball.radius = 4.0;
+	blue_ball.colour = 0x00FF00FF;
+	t_sphere green_ball;
+	green_ball.center[0] = -5;
+	green_ball.center[1] = -5;
+	green_ball.center[2] = 60;
+	green_ball.radius = 4.0;
+	green_ball.colour = 0x0000FFFF;
+
+	t_sphere *balls = malloc(sizeof(t_sphere) * 3);
+	balls[0] = red_ball;
+	balls[1] = blue_ball;
+	balls[2] = green_ball;
+
+	y = -HEIGHT/2;
+	while (y < HEIGHT/2)
+	{
+		x = -WIDTH/2;
+		while (x < WIDTH/2)
+		{
+			colour = trace_Ray(balls, x, y);
+			mlx_put_pixel(g_img, x + (WIDTH/2), y + (HEIGHT/2), colour);
+			x++;
+		}
+		y++;
+	}
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
+	return (0);
 }
+
+
+// void draw_sphere()
+// {
+// 	t_cords camera;
+// 	t_cords ray;
+// 	int DEPTH = 100;
+// 	double x_mid = WIDTH/2;
+// 	double y_mid = HEIGHT/2;
+// 	double z_mid = DEPTH/2;
+// 	double r = 50;
+// 	double FOV = 0.75;
+// 	double x = WIDTH/2 + 10;
+// 	double y = HEIGHT/2 + 10;
+// 	double z =  DEPTH/2 + 10;
+// 	double *hit_x;
+// 	double *hit_y;
+
+// 	// hit_x = abc_formula(pow(z*x, 2), 2*(x - x_mid), -pow(r, 2));
+// 	// hit_y = abc_formula(pow(z*y, 2), 2*(y - y_mid), -pow(r, 2));
+// 	// printf("%f\n", hit_x[0]);
+// 	// printf("%f\n", hit_x[1]);
+// 	// printf("%f\n", hit_y[0]);
+// 	// printf("%f\n", hit_y[1]);
+// 	// if ()
+// 	// 	mlx_put_pixel(g_img, x, y, 0xFEDD00FF);
+// 	while (x < WIDTH)
+// 	{
+// 		while (y < HEIGHT)
+// 		{
+// 			if (trace_Ray == 1)
+// 				mlx_put_pixel(g_img, x, y, 0xFEDD00FF);
+// 			y++;
+// 		}
+// 		y = 0
+// 		x++;
+// 	}
+// }
+
+// prequel
+// 	O = (0,0,0) camera position
+// 	frame, viewport, has width and height, Vw en Vh 
+// 	en ligt op afstand 'd' (frameZ - cameraZ)
+// 	voor dit voorbeeld is d == 1 (FOV wordt 53% komt door de hoeken van camera naar viewport)
+
+// canvas to viewport
+// 	canvas coordinates of the pixel, Cx Cy
+// 	dus viewportX = Cx * (Vmax_w / Cmax_w)
+// 	dus viewportY = Cy * (Vmax_h / Cmax_h)
+// 	viewportZ = d = 1
+
+// Ray equation
+// 	ray gaat van camera naar viewport, en P is een punt op de Ray
+// 	P = t(V-O) + O
+// 	V-O is de richting van de Ray, nu tD
+
+// Sphere equation
+// 	we hebben center C en radius r en punten P (nu is P punten op de sphere)
+// 	verschil tussen P en C is r, te schrijven als 
+// 	(P - C) * (P - C) = r*r
+
+// Ray meet Sphere
+// 	we hebben (P - C) * (P - C) = r*r en P = tD + O
+// 	de vergelijking wordt (tD+O - C) * (tD+O - C) = r*r
+// 	ABCformule maken
+// 	O - C = OC dan krijg je (tD + OC) * (tD + OC) = r*r
+// 	tD[2] + 2(tD*OC) + OC[2] -r[2]
+// 	a = D[2]
+// 	b = D*OC
+// 	c = OC[2] - r[2]
+// 	-b +/- (sqrt(b[2] - 4ac)) / 2a
+
+// nu in code

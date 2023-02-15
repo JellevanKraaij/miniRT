@@ -35,5 +35,7 @@ endif()
 #optionaly add libft:
 add_subdirectory(lib/libft)
 add_subdirectory(lib/get_next_line)
+add_subdirectory(lib/matrix)
 target_link_libraries(${EXEC_NAME} PRIVATE ft)
 target_link_libraries(${EXEC_NAME} PRIVATE get_next_line)
+target_link_libraries(${EXEC_NAME} PRIVATE matrix)

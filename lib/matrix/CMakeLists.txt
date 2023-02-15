@@ -8,7 +8,10 @@ set (SRCS
     src/addition.c
     src/subtraction.c
     src/multiplication.c
-    src/checks.c
+    src/3d/utils.c
+    src/3d/allocation.c
+    src/3d/dot.c
+    src/debug.c
 )
 
 add_library(matrix STATIC ${SRCS})

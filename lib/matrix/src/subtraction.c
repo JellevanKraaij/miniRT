@@ -21,3 +21,21 @@ t_mat *mat_subtract(const t_mat *lhs, const t_mat *rhs)
 	}
 	return (ret);
 }
+
+int mat_subtract_assign(t_mat *lhs, const t_mat *rhs)
+{
+	size_t	i;
+
+	if (!mat_eq_dm(lhs, rhs))
+	{
+		MAT_ERROR("ERROR Matrix not same size");
+		return (MAT_RET_ERROR);
+	}
+	i = 0;
+	while (i < lhs->num_cols * lhs->num_rows)
+	{
+		lhs->data[i] -= rhs->data[i];
+		i++;
+	}
+	return (MAT_RET_OK);
+}

@@ -4,12 +4,11 @@
 #include <memory.h>
 #include <float.h>
 #include <math.h>
+#include "camera.h"
+#include "ray.h"
 
-#define SCREEN_WIDTH 512
-#define SCREEN_HEIGHT 512
-
-#define VIEWPORT_WIDTH 10
-#define VIEWPORT_HEIGHT 10
+#define SCREEN_WIDTH 1000
+#define SCREEN_HEIGHT 1000
 
 #include "config.h"
 
@@ -44,106 +43,66 @@ int32_t	main(void)
 	return (EXIT_SUCCESS);
 }
 
-double *CanvasToViewport(int x, int y, double depth)
+bool hit_sphere(const t_vec3 *center, double radius, const t_ray *ray)
 {
-	double *ret = malloc(sizeof(double) * 3);
+	t_vec3	*oc;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
 
-	ret[X] = (double)x * ((double)VIEWPORT_WIDTH / (double)SCREEN_WIDTH);
-	ret[Y] = (double)y * ((double)VIEWPORT_HEIGHT / (double)SCREEN_HEIGHT);
-	ret[Z] = depth;
-	return (ret);
-}
+	oc = mat_subtract(ray->origin, center);
+	// printf("ray origin: "); mat_print(ray->origin);
+	// printf("ray direction: "); mat_print(ray->direction);
 
-double dot_product(double *v, double *u, int n)
-{
-    double result = 0.0;
-    for (int i = 0; i < n; i++)
-        result += v[i] * u[i];
-    return result;
-}
+	a = mat_vec3_dot(ray->direction, ray->direction);
+	b = 2.0 * mat_vec3_dot(oc, ray->direction);
+	c = mat_vec3_dot(oc, oc) - (radius * radius);
 
-typedef struct sphere_s {
-	double radius;
-	double position[3];
-	uint32_t color;
-} sphere_t;
+	// printf("a: %f b: %f c: %f\n", a, b, c);
 
-double *IntersectRaySphere(double *origin, double *destination, sphere_t *sphere)
-{
-	double a = dot_product(destination, destination, 3);
-	double b = 2 * dot_product(sphere->position, destination, 3);
-	double c = dot_product(sphere->position, sphere->position, 3) - (sphere->radius * sphere->radius);
-
-	double discriminant = b * b - 4 * a * c;
-
-	if (discriminant < 0)
-		return (NULL);
-	double *ret = malloc(sizeof(double) * 2);
-
-	ret[0] = (-b + sqrt(discriminant)) / (2*a);
-    ret[1] = (-b - sqrt(discriminant)) / (2*a);
-	return ret;
-}
-
-const uint32_t sphere_cnt = 3;
-sphere_t spheres[sphere_cnt] = {
-{.radius = 5, .position = {5, 0, 60}, .color = 0xFFFF00FF},
-{.radius = 5, .position = {0, 0, 66}, .color = 0x00FF00FF},
-{.radius = 5, .position = {-5, 0, 60}, .color = 0xFF00FFFF}
-};
-
-
-uint32_t TraceRay(double *origin, double *destination, double min, double max)
-{
-	double closest_intersect = DBL_MAX;
-	sphere_t *closest_sphere = NULL;
-
-	uint32_t i = 0;
-
-	while (i < sphere_cnt)
-	{
-		double *intersections = IntersectRaySphere(origin, destination, &spheres[i]);
-		if (intersections == NULL)
-		{
-			printf("no intersect with sphere %u\n", i);
-			i++;
-			continue;
-		}
-		printf("a intersect with sphere %u\n", i);
-		if (intersections[0] < closest_intersect)
-		{
-			closest_intersect = intersections[0];
-			closest_sphere = &spheres[i];
-		}
-		if (intersections[1] < closest_intersect)
-		{
-			closest_intersect = intersections[1];
-			closest_sphere = &spheres[i];
-		}
-		i++;
-	}
-	if (closest_sphere == NULL)
-		return (0xFF000000);
-	return (closest_sphere->color);
+	discriminant = (b * b) - (4 * a * c);
+	// printf("discriminant %f\n", discriminant);
+	mat_free(oc);
+	return (discriminant > 0);
 }
 
 void	render(void)
 {
+	t_camera	*camera;
 	int	x;
 	int	y;
-	double origin[3] = {0, 0, 0}; 
+	t_vec3	*origin;
 
-	x = -(SCREEN_WIDTH / 2);
-	while (x < SCREEN_WIDTH / 2)
+	origin = mat_vec3_new_set((double []){0, 0, 0});
+	camera = camera_new(origin, SCREEN_WIDTH / SCREEN_HEIGHT, 90);
+	mat_free(origin);
+	x = 0;
+
+	// printf("camera horizontal: "); mat_print(camera->horizontal);
+	// printf("camera vertical: "); mat_print(camera->vertical);
+	// printf("camera corner: "); mat_print(camera->lower_left_corner);
+
+	// t_ray *test = camera_generate_ray(camera, 0.5, 0.5);
+
+	// printf("ray origin: "); mat_print(test->origin);
+	// printf("ray direction: "); mat_print(test->direction);
+
+	while (x < SCREEN_WIDTH)
 	{
-		y = -(SCREEN_HEIGHT / 2);
-		while (y < SCREEN_HEIGHT / 2)
+		y = 0;
+		while (y < SCREEN_HEIGHT)
 		{
-			double *viewPort = CanvasToViewport(x, y, -20);
-			uint32_t color = TraceRay(origin, viewPort, 1, DBL_MAX);
-			mlx_put_pixel(g_img, x + (SCREEN_WIDTH / 2), y + (SCREEN_HEIGHT / 2), color);
+			t_ray *ray = camera_generate_ray(camera, (double)x / (SCREEN_WIDTH - 1), (double)y / (SCREEN_HEIGHT - 1));
+			
+			if (hit_sphere(mat_vec3_new_set((double []){1, 0, -1}), 0.5, ray))
+				mlx_put_pixel(g_img, x, y, 0xFF0000FF);
+			else
+				mlx_put_pixel(g_img, x, y, 0xFFFFFFFF);
+			ray_destroy(ray);
 			y++;
 		}
 		x++;
 	}
+	camera_destroy(camera);
 }

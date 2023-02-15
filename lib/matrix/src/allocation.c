@@ -58,6 +58,8 @@ t_mat *mat_dup(const t_mat *matrix)
 
 void mat_free(t_mat *matrix)
 {
+	if (matrix == NULL)
+		return ;
 	free(matrix->data);
 	free(matrix);
 }

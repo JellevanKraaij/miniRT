@@ -3,11 +3,16 @@ cmake_minimum_required(VERSION 3.21.0)
 project(miniRT)
 set (SRCS
     src/main.c
+    src/string_utilities.c
+    src/parsing/check_filmset.c
+    src/parsing/check_file_args.c
+    src/parsing/check_objects.c
+    src/parsing/error_handling.c
 )
 set (EXEC_NAME miniRT)
 
 #compiler settings:
-set (CMAKE_C_FLAGS "-Wall -Wextra")
+set (CMAKE_C_FLAGS "-Wall -Werror -Wextra")
 set (CMAKE_C_FLAGS_DEBUG "-g -fsanitize=address") #cmake -DCMAKE_BUILD_TYPE=DEBUG to add debug flags
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON) #vscode include path checking
 

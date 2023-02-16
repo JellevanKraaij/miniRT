@@ -15,16 +15,9 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS ON) #vscode include path checking
 add_executable(${EXEC_NAME} ${SRCS})
 target_include_directories(${EXEC_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-add_subdirectory(lib/MLX42)
-target_link_libraries(${EXEC_NAME} PRIVATE mlx42)
-#find_library(GLFW_LIB NAMES glfw3 glfw)
-#message(${GLFW_LIB})
-#target_link_libraries(${EXEC_NAME} PRIVATE mlx42 ${GLFW_LIB})
-#if (APPLE)
-#target_link_libraries(${EXEC_NAME} PRIVATE "-framework Cocoa" "-framework OpenGL" "-framework IOKit")
-#endif()
-
 add_subdirectory(lib/libft)
 add_subdirectory(lib/get_next_line)
+add_subdirectory(lib/MLX42)
 target_link_libraries(${EXEC_NAME} PRIVATE ft)
 target_link_libraries(${EXEC_NAME} PRIVATE get_next_line)
+target_link_libraries(${EXEC_NAME} PRIVATE mlx42)

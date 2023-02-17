@@ -6,11 +6,27 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:47:14 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/02/16 18:47:17 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/02/17 15:51:18 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parse.h>
+
+int	check_dot(char *str)
+{
+	int	i;
+	int	dots;
+
+	i = 0;
+	dots = 0;
+	while (str[i])
+	{
+		if (str[i] == '.')
+			dots++;
+		i++;
+	}
+	return (dots);
+}
 
 int	count_array(char **splitted)
 {

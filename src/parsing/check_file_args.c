@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/02/16 18:45:04 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/02/17 15:55:21 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	loop_to_checkfunction(char **split_line)
 		i++;
 	}
 	if (i >= 6)
-		error_messages(id);
+		error_messages(ident);
 }
 
 void	check_file_args(int fd)
@@ -49,7 +49,7 @@ void	check_file_args(int fd)
 		next_line = get_next_line(fd);
 		if (next_line == NULL)
 			break ;
-		split_line = protec(ft_splitset(next_line, " \n"));
+		split_line = protec(ft_splitset(next_line, " \t\r\n\v\f")); // alle whitespace filteren
 		free(next_line);
 		if (count_array(split_line) == 0)
 		{

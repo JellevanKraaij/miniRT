@@ -16,7 +16,7 @@ enum error_codes
 	n_args,
 	wrongfile,
 	outofrange,
-	id,
+	ident,
 	memal
 };
 
@@ -46,5 +46,6 @@ void	check_plane(char **str);
 // string_utilities
 void	free_dubarray(char **dubarray);
 int		count_array(char **splitted);
+int		check_dot(char *str);
 
 #endif

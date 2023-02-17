@@ -4,7 +4,7 @@
 
 VEC3_TYPE vec3_dot(const t_vec3 *lhs, const t_vec3 *rhs)
 {
-	uint8_t i;
+	uint_fast8_t i;
 	VEC3_TYPE ret;
 
 	i = 0;

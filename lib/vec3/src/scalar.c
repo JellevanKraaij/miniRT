@@ -4,7 +4,7 @@
 
 t_vec3	vec3_scalar(const t_vec3 *lhs, const VEC3_TYPE rhs)
 {
-	uint8_t i;
+	uint_fast8_t i;
 	t_vec3 ret;
 
 	i = 0;

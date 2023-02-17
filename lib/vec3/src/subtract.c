@@ -4,7 +4,7 @@
 
 t_vec3	vec3_subtract(const t_vec3 *lhs, const t_vec3 *rhs)
 {
-	uint8_t i;
+	uint_fast8_t i;
 	t_vec3 ret;
 
 	i = 0;

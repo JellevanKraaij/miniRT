@@ -2,17 +2,41 @@
 #include "render.h"
 #include <math.h>
 #include <libft.h>
+ 
+# include <stdio.h>
 
-t_camera camera_new(const t_vec3 *origin, double aspect_ratio, int hfov)
+t_camera camera_new(const t_vec3 *position, const t_vec3 *direction, double aspect_ratio, int hfov)
 {
+
+	const t_vec3	camera_up = vec3_new(0, 1, 0);
 	const double viewport_width = 2.0 * tan(to_radians(hfov)/ 2);
 	const double viewport_height = viewport_width / aspect_ratio;
 	t_camera ret;
 
-	ret.origin = *origin;
-	ret.lower_left_corner = vec3_subtract_c(*origin, vec3_new((double []){viewport_width / 2, viewport_height / 2, 1}));
-	ret.horizontal = vec3_new((VEC3_TYPE []){viewport_width, 0, 0});
-	ret.vertical = vec3_new((VEC3_TYPE []){0, viewport_height, 0});
+	t_vec3	w = vec3_normalize_c(vec3_subtract_c(vec3_new(0, 0, 0), *direction));
+	printf("w: "); vec3_print(&w);
+	t_vec3	u = vec3_normalize_c(vec3_cross(&camera_up, &w));
+	printf("u: "); vec3_print(&u);
+	t_vec3	v = vec3_cross(&u, &v);
+	printf("v: "); vec3_print(&v);
+
+	printf("viewport width: %f, viewport height: %f\n", viewport_width, viewport_height);
+	
+	ret.origin = *position;
+	ret.horizontal = vec3_scalar(&u, viewport_width);
+	ret.vertical = vec3_scalar(&v, viewport_height);
+	printf("origin: "); vec3_print(&ret.origin);
+	printf("horizontal: "); vec3_print(&ret.horizontal);
+	printf("vertical: "); vec3_print(&ret.vertical);
+
+	t_vec3 half_horizontal = vec3_divide(&ret.horizontal, 2);
+	t_vec3 half_vertical = vec3_divide(&ret.vertical, 2);
+	printf("horizontal tmp: "); vec3_print(&half_horizontal);
+	printf("vertical tmp: "); vec3_print(&half_vertical);
+
+	ret.lower_left_corner = vec3_subtract_c(vec3_subtract_c(vec3_subtract_c(ret.origin, half_horizontal), half_vertical), w);
+	printf("corner: "); vec3_print(&ret.lower_left_corner);
+
 	return (ret);
 }
 
@@ -28,4 +52,3 @@ t_ray camera_generate_ray(const t_camera *camera, double width_pct, double heigh
 
 	return ((t_ray){.origin = camera->origin, .direction = direction});
 }
-

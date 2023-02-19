@@ -6,7 +6,7 @@ extern "C" {
 	#include <vec3.h>
 }
 
-TEST(vec3, new) {
+TEST(libvec3, new) {
   t_vec3  vec;
   double data[] = {3223, -0.13141414, 43111414};
 
@@ -16,7 +16,7 @@ TEST(vec3, new) {
     EXPECT_DOUBLE_EQ(vec.data[i], data[i]);
 }
 
-TEST(vec3, set)
+TEST(libvec3, set)
 {
   t_vec3  vec;
   double data[] = {245251, -0.232441, -5131144};
@@ -27,7 +27,7 @@ TEST(vec3, set)
     EXPECT_DOUBLE_EQ(vec.data[i], data[i]);
 }
 
-TEST(vec3, fill)
+TEST(libvec3, fill)
 {
   t_vec3  vec;
 

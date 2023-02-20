@@ -6,11 +6,13 @@
 #include <math.h>
 #include "camera.h"
 #include "ray.h"
+#include "hittable/hittable.h"
+#include "hittable/sphere.h"
+#include "hittable/hittable_list.h"
+#include "render.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
-
-#include "config.h"
 
 mlx_image_t	*g_img;
 
@@ -66,40 +68,27 @@ void	render(void)
 	t_camera	camera;
 	int	x;
 	int	y;
-	t_vec3	origin;
-	t_vec3	direction;
 
-	origin = vec3_new(0, 0, 0);
-	direction = vec3_new(0, 0, -1);
-	camera = camera_new(&origin, &direction, SCREEN_WIDTH / SCREEN_HEIGHT, 90);
+	camera = camera_new(vec3_new(0, 0, 0), vec3_new(0, 0, -1), SCREEN_WIDTH / SCREEN_HEIGHT, 90);
+
+	t_hittable_list *world = hittable_list_new(2);
+
+	hittable_list_set(world, 0, hittable_new(vec3_new(1, 0, 5), (t_vec3){}, (uint8_t []){255, 0, 0}, sphere_new(0.5)));
+	hittable_list_set(world, 1, hittable_new(vec3_new(-1, 0, 5), (t_vec3){}, (uint8_t []){0, 255, 0}, sphere_new(0.5)));
 	x = 0;
-
-	// vec3_print_c(vec3_cross_c(vec3_new((double []){0, 1, 0}), vec3_new((double []){0, 1, 0})));
-
-	// printf("camera horizontal: "); mat_print(camera->horizontal);
-	// printf("camera vertical: "); mat_print(camera->vertical);
-	// printf("camera corner: "); mat_print(camera->lower_left_corner);
-
-	t_ray test = camera_generate_ray(&camera, 0.5, 0.5);
-
-	printf("ray origin: "); vec3_print(&test.origin);
-	printf("ray direction: "); vec3_print(&test.direction);
-
 	while (x < SCREEN_WIDTH)
 	{
 		y = 0;
 		while (y < SCREEN_HEIGHT)
 		{
 			t_ray ray = camera_generate_ray(&camera, (double)x / (SCREEN_WIDTH - 1), (double)y / (SCREEN_HEIGHT - 1));
-			
-			t_vec3 sphere_origin = vec3_new(1, 1, 5);
-			if (hit_sphere(&sphere_origin, 0.5, &ray))
-				mlx_put_pixel(g_img, x, y, 0xFF0000FF);
+			t_hit_record hit_record = hittable_list_hit(world, &ray, 0, DBL_MAX);
+			if (hit_record.hit)
+				mlx_put_pixel(g_img, x, y, rgb_to_rgba(hit_record.object->color));
 			else
-				mlx_put_pixel(g_img, x, y, 0xFFFFFFFF);
+				mlx_put_pixel(g_img, x, y, 0xFF000000);
 			y++;
 		}
 		x++;
 	}
-
 }

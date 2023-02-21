@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "render.h"
-#include "hittable/sphere.h"
+#include "hittables/sphere.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
@@ -64,6 +64,3 @@ int32_t	main(void)
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
-
-
-

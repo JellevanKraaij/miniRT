@@ -1,8 +1,8 @@
 #ifndef RENDER_H
 # define RENDER_H
 
-#include "hittable/hittable.h"
-#include "hittable/array.h"
+#include "hittables/hittable.h"
+#include "hittables/array.h"
 #include <stdint.h>
 #include "camera.h"
 

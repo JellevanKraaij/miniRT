@@ -1,7 +1,8 @@
-#include <hittable/hittable.h>
-#include <libft.h>
+#include <hittables/hittable.h>
+#include "hittables/sphere.h"
 #include "ray.h"
-#include "hittable/sphere.h"
+
+#include <libft.h>
 #include <float.h>
 
 typedef void (*t_hittable_destroy_f)(void *);

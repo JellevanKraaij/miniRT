@@ -1,6 +1,6 @@
 #include "render.h"
-#include "hittable/hittable.h"
-#include "hittable/array.h"
+#include "hittables/hittable.h"
+#include "hittables/array.h"
 #include  <float.h>
 
 double screenx_to_modelx(uint32_t x, uint32_t width)

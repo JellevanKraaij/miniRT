@@ -41,9 +41,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install GLFW
-      run: sudo apt-get install -y xorg-dev
-
+    - name: Install dependencies
+      run: sudo apt-get install -y xorg-dev 
+      # MLX42 -> glfw -> xorg-dev
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory.
       run: cmake -B ${{github.workspace}}/build

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.21.0)
 project(miniRT)
 set (SRCS
     src/main.c
+    src/render/render.c
+    src/render/render_params.c
     src/render/camera.c
     src/render/ray.c
     src/render/utils.c

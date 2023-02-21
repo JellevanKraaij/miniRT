@@ -33,7 +33,8 @@ t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const ui
 
 void hittable_destroy(t_hittable *hittable)
 {
-
+	if (hittable == NULL)
+		return ;
 	g_hittable_destroy_f[hittable->data.type](hittable->data.data);
 	free(hittable);
 }

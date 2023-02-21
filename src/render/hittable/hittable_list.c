@@ -1,16 +1,17 @@
-#include "hittable/hittable_list.h"
+#include "hittable/array.h"
 #include <float.h>
 #include <stdlib.h>
+#include <libft.h>
 
-t_hittable_list *hittable_list_new(const size_t size)
+t_hittable_array *hittable_array_new(const size_t size)
 {
-	t_hittable_list *list;
+	t_hittable_array *list;
 
-	list = malloc(sizeof(t_hittable_list));
+	list = malloc(sizeof(t_hittable_array));
 	if (!list)
 		return (NULL);
 	list->size = size;
-	list->hittables = malloc(sizeof(t_hittable *) * size);
+	list->hittables = ft_calloc(size, sizeof(t_hittable *));
 	if (!list->hittables)
 	{
 		free(list);
@@ -19,10 +20,12 @@ t_hittable_list *hittable_list_new(const size_t size)
 	return (list);
 }
 
-void hittable_list_destroy(t_hittable_list *list)
+void hittable_array_destroy(t_hittable_array *list)
 {
 	size_t i;
 
+	if (list == NULL)
+		return ;	
 	i = 0;
 	while (i < list->size)
 	{
@@ -33,14 +36,14 @@ void hittable_list_destroy(t_hittable_list *list)
 	free(list);
 }
 
-void hittable_list_set(t_hittable_list *list, const size_t index, t_hittable *hittable)
+void hittable_array_set(t_hittable_array *list, const size_t index, t_hittable *hittable)
 {
 	if (index >= list->size)
 		return ;
 	list->hittables[index] = hittable;
 }
 
-t_hit_record hittable_list_hit(const t_hittable_list *list, const t_ray *ray, const double t_min, const double t_max)
+t_hit_record hittable_array_hit(const t_hittable_array *list, const t_ray *ray, const double t_min, const double t_max)
 {
 	t_hit_record closest;
 	t_hit_record temp_record;

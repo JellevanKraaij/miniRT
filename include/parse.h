@@ -26,6 +26,32 @@ typedef struct s_jump_table
 	void (*check_function)(char **);
 } t_jump_table ;
 
+typedef struct s_spheres
+{
+	double				center[3];
+	double				diameter;
+	double				rgb[3];
+	struct s_spheres	*next;
+}	t_spheres ;
+
+typedef struct s_planes
+{
+	double			a_point[3];
+	double			plane_vector[3];
+	double			rgb[3];
+	struct s_planes	*next;
+}	t_planes ;
+
+typedef struct s_cylinders
+{
+	double				center[3];
+	double				axis[3];
+	double				diameter;
+	double				height;
+	double				rgb[3];
+	struct s_cylinders	*next;
+}	t_cylinders ;
+
 // error_handling
 void	check_value_range(char *str, double min, double max);
 void	error_messages(int error_code);

@@ -11,4 +11,5 @@ int	main(int ac, char **av)
 	if (fd < 0)
 		error_messages(wrongfile);
 	check_file_args(fd);
+	
 }

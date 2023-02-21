@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/02/17 15:55:21 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:56:07 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	check_file_args(int fd)
 		next_line = get_next_line(fd);
 		if (next_line == NULL)
 			break ;
-		split_line = protec(ft_splitset(next_line, " \t\r\n\v\f")); // alle whitespace filteren
+		split_line = protec(ft_splitset(next_line, " \t\r\n\v\f"));
 		free(next_line);
 		if (count_array(split_line) == 0)
 		{

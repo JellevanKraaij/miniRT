@@ -49,7 +49,7 @@ t_ray camera_generate_ray(const t_camera *camera, double width_pct, double heigh
 
 	direction = vec3_subtract(&direction, &camera->origin);
 
-	return ((t_ray){.origin = camera->origin, .direction = direction});
+	return (ray_new(&camera->origin, &direction));
 }
 
 void camera_destroy(t_camera *camera)

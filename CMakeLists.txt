@@ -12,9 +12,10 @@ set (SRCS
     src/render/camera.c
     src/render/ray.c
     src/render/utils.c
-    src/render/hittable/hittable.c
-    src/render/hittable/sphere.c
-    src/render/hittable/hittable_list.c
+    src/render/light.c
+    src/render/hittables/hittable.c
+    src/render/hittables/sphere.c
+    src/render/hittables/hittable_list.c
 )
 set (EXEC_NAME miniRT)
 

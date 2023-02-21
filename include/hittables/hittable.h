@@ -21,7 +21,7 @@ typedef struct s_hittable
 {
 	t_vec3	center;
 	t_vec3	orientation;
-	uint8_t	color[3];
+	t_vec3	color;
 
 	t_hittable_data	data;
 }	t_hittable;
@@ -34,10 +34,10 @@ typedef struct s_hit_record
 	double	distance;
 }	t_hit_record;
 
-t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const uint8_t color[3], t_hittable_data data);
+t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data);
 
 t_hit_record hittable_hit(const t_hittable *hittable, const t_ray *ray, const double t_min, const double t_max);
-
+bool hittable_is_hit(const t_hit_record *record);
 
 void hittable_destroy(t_hittable *hittable);
 

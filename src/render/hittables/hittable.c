@@ -4,19 +4,20 @@
 
 #include <libft.h>
 #include <float.h>
+#include <stdbool.h>
 
 typedef void (*t_hittable_destroy_f)(void *);
 typedef t_hit_record (*t_hittable_hit_f)(const t_hittable *, const t_ray *, double, double);
 
 static const t_hittable_destroy_f	g_hittable_destroy_f[] = {
-	[SPHERE] = sphere_destroy
+	[SPHERE] = sphere_destroy,
 };
 
 static const t_hittable_hit_f	g_hittable_hit_f[] = {
-	[SPHERE] = sphere_hit
+	[SPHERE] = sphere_hit,
 };
 
-t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const uint8_t color[3], t_hittable_data data)
+t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data)
 {
 	t_hittable	*new;
 
@@ -27,7 +28,7 @@ t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const ui
 		return (NULL);
 	new->center = center;
 	new->orientation = orientation;
-	ft_memcpy(new->color, color, 3);
+	new->color = color;
 	new->data = data;
 	return (new);
 }
@@ -43,4 +44,9 @@ void hittable_destroy(t_hittable *hittable)
 t_hit_record hittable_hit(const t_hittable *hittable, const t_ray *ray, const double t_min, const double t_max)
 {
 	return (g_hittable_hit_f[hittable->data.type](hittable, ray, t_min, t_max));
+}
+
+bool hittable_is_hit(const t_hit_record *record)
+{
+	return (record->hit);
 }

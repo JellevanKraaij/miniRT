@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ master, 3d-tracer ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, 3d-tracer ]
+    branches: [ master ]
 
 jobs:
   build-test-mac:

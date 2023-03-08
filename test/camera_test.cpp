@@ -12,6 +12,8 @@ TEST(camera, basic_ray)
 	t_ray test_ray = camera_generate_ray(camera, 0.5, 0.5);
 
 	EXPECT_TRUE(vec3_eq_c(test_ray.direction, vec3_new(0, 0, 1)));
+
+	camera_destroy(camera);
 }
 
 TEST(camera, basic_ray2)
@@ -24,4 +26,6 @@ TEST(camera, basic_ray2)
 	std::cout << "result: "; vec3_print(&test_ray.direction);
 
 	EXPECT_TRUE(vec3_eq_c(test_ray.direction, vec3_new(.6, .6, 1)));
+
+	camera_destroy(camera);
 }

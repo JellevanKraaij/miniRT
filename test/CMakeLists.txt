@@ -24,7 +24,7 @@ list(TRANSFORM SRCS PREPEND ../)
 add_executable(
 	${TEST_EXECUTABLE_NAME}
 	${SRCS}
-	camera.cpp
+	camera_test.cpp
 )
 
 target_compile_options(${TEST_EXECUTABLE_NAME} PRIVATE -g -fsanitize=address)

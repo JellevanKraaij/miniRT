@@ -8,7 +8,9 @@
 
 typedef enum e_hittable_object_type
 {
-	SPHERE
+	ERROR = -1,
+	SPHERE,
+	PLANE
 }	t_hittable_type;
 
 typedef struct e_hittable_data

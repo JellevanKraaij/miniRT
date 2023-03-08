@@ -15,6 +15,7 @@ set (SRCS
     src/render/light.c
     src/render/hittables/hittable.c
     src/render/hittables/sphere.c
+    src/render/hittables/plane.c
     src/render/hittables/hittable_list.c
 )
 set (EXEC_NAME miniRT)

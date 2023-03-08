@@ -1,5 +1,6 @@
 #include <hittables/hittable.h>
 #include "hittables/sphere.h"
+#include "hittables/plane.h"
 #include "ray.h"
 
 #include <libft.h>
@@ -11,17 +12,19 @@ typedef t_hit_record (*t_hittable_hit_f)(const t_hittable *, const t_ray *, doub
 
 static const t_hittable_destroy_f	g_hittable_destroy_f[] = {
 	[SPHERE] = sphere_destroy,
+	[PLANE] = plane_destroy
 };
 
 static const t_hittable_hit_f	g_hittable_hit_f[] = {
 	[SPHERE] = sphere_hit,
+	[PLANE] = plane_hit
 };
 
 t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data)
 {
 	t_hittable	*new;
 
-	if (data.data == NULL)
+	if (data.type == ERROR)
 		return (NULL);
 	new = malloc(sizeof(t_hittable));
 	if (new == NULL)

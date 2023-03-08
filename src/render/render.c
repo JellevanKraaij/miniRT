@@ -32,7 +32,7 @@ int	render(t_render_params *render_params)
 			if (hittable_is_hit(&hit_record))
 			{
 				t_ray light_ray = light_generate_ray(render_params->light, &hit_record.point);
-				t_hit_record light_hit_record = hittable_array_hit(render_params->hittables, &light_ray, 0.01, DBL_MAX);
+				t_hit_record light_hit_record = hittable_array_hit(render_params->hittables, &light_ray, 0.001, DBL_MAX);
 				if (!hittable_is_hit(&light_hit_record))
 					render_params->putpixel_f(x, y, convert_color(&hit_record.object->color), render_params->putpixel_data);
 				else

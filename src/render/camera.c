@@ -2,6 +2,7 @@
 #include "render.h"
 #include <math.h>
 #include <libft.h>
+#include <float.h>
  
 # include <stdio.h>
 
@@ -49,7 +50,7 @@ t_ray camera_generate_ray(const t_camera *camera, double width_pct, double heigh
 
 	direction = vec3_subtract(&direction, &camera->origin);
 
-	return (ray_new(&camera->origin, &direction));
+	return (ray_new(&camera->origin, &direction, 0, DBL_MAX));
 }
 
 void camera_destroy(t_camera *camera)

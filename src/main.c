@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "render.h"
 #include "hittables/sphere.h"
+#include "hittables/array.h"
+#include "hittables/plane.h"
 
 #define SCREEN_WIDTH 1000
 #define SCREEN_HEIGHT 1000
@@ -32,13 +34,13 @@ t_render_params	*sample_config(mlx_image_t *img)
 
 	render_params->width = SCREEN_WIDTH;
 	render_params->height = SCREEN_HEIGHT;
-	render_params->camera = camera_new(vec3_new(0, 0, 0), vec3_new(0, 0, -1), (int)render_params->width / (int)render_params->height, 60);
-	render_params->light = light_new(vec3_new(10, 0, -5), vec3_new(255, 255, 255), 1);
+	render_params->camera = camera_new(vec3_new(-0.3, 0, 0), vec3_new(0, 0, 1), (int)render_params->width / (int)render_params->height, 70);
+	render_params->light = light_new(vec3_new(1.5, 0, 1), vec3_new(255, 255, 255), 1);
 
 	render_params->hittables = hittable_array_new(2); //TODO: protect null
 
-	hittable_array_set(render_params->hittables, 0, hittable_new(vec3_new(0, 0, 3), (t_vec3){}, vec3_new(0, 0, 255), sphere_new(0.5)));
-	hittable_array_set(render_params->hittables, 1, hittable_new(vec3_new(0.3, 0, 2.4), (t_vec3){}, vec3_new(255, 0, 0), sphere_new(0.1))); //TODO: protect null
+	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 4), (t_vec3){}, vec3_new(0, 0, 200), sphere_new(0.5)));
+	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 15), vec3_new(0, 0, 1), vec3_new(0, 150, 0), plane_new())); //TODO: protect null
 	
 	render_params->putpixel_f = putpixel_f;
 	render_params->putpixel_data = img;

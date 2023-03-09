@@ -1,4 +1,6 @@
 #include "light.h"
+#include "render.h"
+
 
 #include <stdlib.h>
 
@@ -23,5 +25,5 @@ t_ray light_generate_ray(const t_light *light, const t_vec3 *point)
 {
 	const t_vec3 direction = vec3_subtract(&light->origin, point);
 
-	return (ray_new(point, &direction));
+	return (ray_new(point, &direction, RENDER_SHADOW_BIAS, vec3_lenght(&direction)));
 }

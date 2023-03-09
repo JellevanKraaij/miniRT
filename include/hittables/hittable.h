@@ -31,15 +31,13 @@ typedef struct s_hittable
 typedef struct s_hit_record
 {
 	const t_hittable	*object;
-	bool	hit;
 	t_vec3	point;
 	double	distance;
 }	t_hit_record;
 
 t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data);
 
-t_hit_record hittable_hit(const t_hittable *hittable, const t_ray *ray, const double t_min, const double t_max);
-bool hittable_is_hit(const t_hit_record *record);
+bool hittable_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record);
 
 void hittable_destroy(t_hittable *hittable);
 

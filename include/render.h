@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#define RENDER_SHADOW_BIAS 0.0001
+
 typedef int (*t_putpixel_f)(uint32_t x, uint32_t y, uint32_t color, void *data);
 
 typedef struct s_render_params

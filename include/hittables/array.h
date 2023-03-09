@@ -9,14 +9,15 @@ typedef struct s_hittable_array
 {
 	t_hittable	**hittables;
 	size_t		size;
+	size_t 		capacity;
 }	t_hittable_array;
 
-t_hittable_array *hittable_array_new(const size_t size);
+t_hittable_array *hittable_array_new(const size_t preallocate_size);
 
-void hittable_array_set(t_hittable_array *list, const size_t index, t_hittable *hittable);
+t_hittable_array *hittable_array_append(t_hittable_array **array, t_hittable *hittable);
 
-void hittable_array_destroy(t_hittable_array *list);
+void hittable_array_destroy(t_hittable_array *array);
 
-t_hit_record hittable_array_hit(const t_hittable_array *list, const t_ray *ray, const double t_min, const double t_max);
+bool hittable_array_hit(const t_hittable_array *array, const t_ray *ray, t_hit_record *hit_record);
 
 #endif

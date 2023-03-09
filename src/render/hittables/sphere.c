@@ -21,7 +21,7 @@ void sphere_destroy(void *data)
 	free(data);
 }
 
-t_hit_record sphere_hit(const t_hittable *hittable, const t_ray *ray, const double t_min, const double t_max)
+bool sphere_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record)
 {
 	t_vec3	oc;
 	double	a;
@@ -30,21 +30,30 @@ t_hit_record sphere_hit(const t_hittable *hittable, const t_ray *ray, const doub
 	double	discriminant;
 
 	oc = vec3_subtract(&ray->origin, &hittable->center);
-	a = vec3_dot(&ray->direction, &ray->direction);
+	a = vec3_lenght_squared(&ray->direction);
 	half_b = vec3_dot(&oc, &ray->direction);
-	c = vec3_dot(&oc, &oc) - ((t_sphere *)hittable->data.data)->radius * ((t_sphere *)hittable->data.data)->radius;
+	c = vec3_lenght_squared(&oc) - (((t_sphere *)hittable->data.data)->radius * ((t_sphere *)hittable->data.data)->radius);
 	discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
-		return ((t_hit_record){.hit = false});
+		return (false);
 	
 	double sqrtd = sqrt(discriminant);
 
 	double root = (-half_b - sqrtd) / a;
-    if (root < t_min || t_max < root) {
-        root = (-half_b + sqrtd) / a;
-        if (root < t_min || t_max < root)
-            return ((t_hit_record){.hit = false});
-    }
-	
-	return ((t_hit_record){.hit = true, .distance = root, .point = ray_at(ray, root), .object = hittable});
+
+	if (root < ray->min_distance || ray->max_distance < root)
+	{
+		root = (-half_b + sqrtd) / a;
+		if (root < ray->min_distance || ray->max_distance < root)
+			return (false);
+	}
+
+
+	if (hit_record == NULL)
+		return (true);
+
+	hit_record->distance = root;
+	hit_record->point = ray_at(ray, root);
+	hit_record->object = hittable;
+	return (true);
 }

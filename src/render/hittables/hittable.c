@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 typedef void (*t_hittable_destroy_f)(void *);
-typedef t_hit_record (*t_hittable_hit_f)(const t_hittable *, const t_ray *, double, double);
+typedef bool (*t_hittable_hit_f)(const t_hittable *, const t_ray *, t_hit_record *);
 
 static const t_hittable_destroy_f	g_hittable_destroy_f[] = {
 	[SPHERE] = sphere_destroy,
@@ -44,12 +44,7 @@ void hittable_destroy(t_hittable *hittable)
 	free(hittable);
 }
 
-t_hit_record hittable_hit(const t_hittable *hittable, const t_ray *ray, const double t_min, const double t_max)
+bool hittable_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record)
 {
-	return (g_hittable_hit_f[hittable->data.type](hittable, ray, t_min, t_max));
-}
-
-bool hittable_is_hit(const t_hit_record *record)
-{
-	return (record->hit);
+	return (g_hittable_hit_f[hittable->data.type](hittable, ray, hit_record));
 }

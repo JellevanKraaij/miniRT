@@ -20,7 +20,7 @@ static const t_hittable_hit_f	g_hittable_hit_f[] = {
 	[PLANE] = plane_hit
 };
 
-t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data)
+t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, double specular, t_hittable_data data)
 {
 	t_hittable	*new;
 
@@ -33,6 +33,7 @@ t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_
 	new->orientation = orientation;
 	new->color = color;
 	new->data = data;
+	new->specular = specular;
 	return (new);
 }
 

@@ -48,12 +48,12 @@ bool sphere_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_
 			return (false);
 	}
 
-
 	if (hit_record == NULL)
 		return (true);
 
 	hit_record->distance = root;
 	hit_record->point = ray_at(ray, root);
 	hit_record->object = hittable;
+	hit_record->normal = vec3_normalize_c(vec3_subtract(&hit_record->point, &hittable->center));
 	return (true);
 }

@@ -3,12 +3,12 @@
 
 # include <vec3.h>
 # include "ray.h"
+# include "color.h"
 
 typedef struct s_light
 {
 	t_vec3  origin;
 	t_vec3  color;
-	double  brightness;
 }   t_light;
 
 t_light *light_new(const t_vec3 origin, const t_vec3 color, double brightness);

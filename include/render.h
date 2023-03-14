@@ -5,6 +5,7 @@
 #include "hittables/array.h"
 #include "camera.h"
 #include "light.h"
+#include "vec3.h"
 
 #include <stdint.h>
 
@@ -21,6 +22,7 @@ typedef struct s_render_params
 
 	t_hittable_array *hittables;
 	t_light 		*light;
+	t_vec3	 		ambient_light;
 	t_camera		*camera;
 
 }	t_render_params;
@@ -32,6 +34,5 @@ int	render(t_render_params *render_params);
 
 double to_degrees(double radians);
 double to_radians(double degrees);
-uint32_t	convert_color(const t_vec3 *color);
 
 #endif

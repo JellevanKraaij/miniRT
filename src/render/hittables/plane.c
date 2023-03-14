@@ -20,7 +20,7 @@ bool plane_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_r
 	double denominator;
 
 	denominator = vec3_dot(&ray->direction, &hittable->orientation);
-	if (fabs(denominator) < 0.00001)
+	if (denominator < 0.0000001)
 		return (false);
 
 	double t = vec3_dot(&hittable->center, &hittable->orientation) / denominator;
@@ -33,5 +33,6 @@ bool plane_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_r
 	hit_record->distance = t;
 	hit_record->point = ray_at(ray, t);
 	hit_record->object = hittable;
+	hit_record->normal = hittable->orientation;
 	return (true);
 }

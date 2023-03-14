@@ -7,7 +7,6 @@
 typedef struct s_camera
 {
 	t_vec3	origin;
-	t_vec3	direction;
 	t_vec3	horizontal;
 	t_vec3	vertical;
 	t_vec3 	lower_left_corner;

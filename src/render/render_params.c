@@ -15,6 +15,7 @@ t_render_params *render_params_new(void)
 	render_params->putpixel_data = NULL;
 	render_params->hittables = NULL;
 	render_params->camera = NULL;
+	render_params->light = NULL;
 	return (render_params);
 }
 
@@ -24,5 +25,6 @@ void render_params_destroy(t_render_params *render_params)
 		return ;
 	hittable_array_destroy(render_params->hittables);
 	camera_destroy(render_params->camera);
+	light_destroy(render_params->light);
 	free(render_params);
 }

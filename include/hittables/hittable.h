@@ -24,6 +24,7 @@ typedef struct s_hittable
 	t_vec3	center;
 	t_vec3	orientation;
 	t_vec3	color;
+	double  specular;
 
 	t_hittable_data	data;
 }	t_hittable;
@@ -33,9 +34,10 @@ typedef struct s_hit_record
 	const t_hittable	*object;
 	t_vec3	point;
 	double	distance;
+	t_vec3	normal;
 }	t_hit_record;
 
-t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, t_hittable_data data);
+t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_vec3 color, double specular, t_hittable_data data);
 
 bool hittable_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record);
 

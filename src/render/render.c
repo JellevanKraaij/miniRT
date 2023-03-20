@@ -50,6 +50,7 @@ int	render(t_render_params *render_params)
 	uint32_t	x;
 	uint32_t	y;
 
+	camera_prepare(render_params->camera);
 	x = 0;
 	while (x < render_params->width)
 	{

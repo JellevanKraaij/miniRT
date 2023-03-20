@@ -25,6 +25,7 @@ set (EXEC_NAME miniRT)
 #compiler settings:
 set (CMAKE_C_FLAGS "-Wall -Werror -Wextra")
 set (CMAKE_C_FLAGS_DEBUG "-g -fsanitize=address") #cmake -DCMAKE_BUILD_TYPE=DEBUG to add debug flags
+set (CMAKE_C_FLAGS_RELEASE "-O3 -Ofast") #cmake -DCMAKE_BUILD_TYPE=RELEASE to add release flags
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON) #vscode include path checking
 
 #make executable with output name specified under EXEC_NAME and sources specified under SRCS

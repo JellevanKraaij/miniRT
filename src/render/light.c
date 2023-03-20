@@ -20,9 +20,11 @@ void light_destroy(t_light *light)
 	free(light);
 }
 
-t_ray light_generate_ray(const t_light *light, const t_vec3 *point)
+t_ray light_generate_ray(const t_light *light, const t_hit_record *hit_record)
 {
-	const t_vec3 direction = vec3_subtract(&light->origin, point);\
+	const t_vec3 direction = vec3_subtract(&light->origin, &hit_record->point);
 
-	return (ray_new(point, &direction, RENDER_SHADOW_BIAS, vec3_lenght(&direction)));
+	const t_vec3 origin = vec3_add_c(hit_record->point, vec3_scalar(&hit_record->normal, 0.0001));
+
+	return (ray_new(&origin, &direction, 0, vec3_lenght(&direction)));
 }

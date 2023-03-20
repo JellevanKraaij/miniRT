@@ -17,22 +17,20 @@ void plane_destroy(void *data)
 
 bool plane_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record)
 {
-	double denominator;
+	double t = vec3_dot_c(vec3_subtract(&hittable->center, &ray->origin), hittable->orientation) / vec3_dot(&ray->direction, &hittable->orientation);\
 
-	denominator = vec3_dot(&ray->direction, &hittable->orientation);
-	if (denominator < 0.0000001)
-		return (false);
-
-	double t = vec3_dot(&hittable->center, &hittable->orientation) / denominator;
 	if (t < ray->min_distance || t > ray->max_distance)
 		return (false);
-
+	
 	if (hit_record == NULL)
 		return (true);
-	
+
 	hit_record->distance = t;
 	hit_record->point = ray_at(ray, t);
-	hit_record->object = hittable;
 	hit_record->normal = hittable->orientation;
+	hit_record->object = hittable;
+
+	hit_record_set_normal(hit_record, ray, &hittable->orientation);
+
 	return (true);
 }

@@ -33,7 +33,6 @@ t_vec3 calculate_specular_light(const t_light *light, const t_ray *light_ray, co
 	else
 		color_scale(&specular_light, 0);
 	return (specular_light);
-
 }
 
 t_vec3 calculate_light_factor(const t_light *light, const t_ray *light_ray, const t_hit_record *hit_record)
@@ -41,7 +40,7 @@ t_vec3 calculate_light_factor(const t_light *light, const t_ray *light_ray, cons
 	t_vec3 light_factor = light->color;
 	double light_dot_normal = vec3_dot(&hit_record->normal, &light_ray->direction);
 	if (light_dot_normal < 0)
-		light_dot_normal =  vec3_dot_c(hit_record->normal, vec3_subtract_c(vec3_new(0,0,0), light_ray->direction));
+		light_dot_normal = 0;
 	color_scale(&light_factor, light_dot_normal);
 	return (light_factor);
 }
@@ -61,10 +60,10 @@ int	render(t_render_params *render_params)
 			t_hit_record hit_record;
 			if (hittable_array_hit(render_params->hittables, &ray, &hit_record))
 			{
-				t_vec3 light = vec3_new(0,0,0);
+				t_vec3 light = VEC3_ZERO;
 				const t_vec3 *obj_color = &hit_record.object->color;
 	
-				t_ray light_ray = light_generate_ray(render_params->light, &hit_record.point);
+				t_ray light_ray = light_generate_ray(render_params->light, &hit_record);
 				if (!hittable_array_hit(render_params->hittables, &light_ray, NULL))
 				{
 					t_vec3 point_light = calculate_light_factor(render_params->light, &light_ray, &hit_record);

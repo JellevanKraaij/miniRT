@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <math.h>
 
+#define HIDE_CURSOR "\e[?25l"
+#define SHOW_CURSOR "\e[?25h"
+
 double screenx_to_modelx(uint32_t x, uint32_t width)
 {
 	return ((double)x / (width - 1));
@@ -45,23 +48,24 @@ t_vec3 calculate_light_factor(const t_light *light, const t_ray *light_ray, cons
 	return (light_factor);
 }
 
-int	render(t_render_params *render_params)
+int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpixel_data, uint32_t width, uint32_t height)
 {
 	uint32_t	x;
 	uint32_t	y;
 
-	camera_prepare(render_params->camera);
+	camera_prepare(render_params->camera, (double)width / (double)height);
 	x = 0;
-	while (x < render_params->width)
+	printf(HIDE_CURSOR);
+	while (x < width)
 	{
 		y = 0;
-		while (y < render_params->height)
+		while (y < height)
 		{
-			t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, render_params->width), screeny_to_modely(y, render_params->height));
+			t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width), screeny_to_modely(y, height));
 			t_hit_record hit_record;
+			t_vec3 light = VEC3_ZERO;
 			if (hittable_array_hit(render_params->hittables, &ray, &hit_record))
 			{
-				t_vec3 light = VEC3_ZERO;
 				const t_vec3 *obj_color = &hit_record.object->color;
 	
 				t_ray light_ray = light_generate_ray(render_params->light, &hit_record);
@@ -75,13 +79,18 @@ int	render(t_render_params *render_params)
 					color_add(&light, &white, &specular_light);
 				}
 				color_add(&light, obj_color, &render_params->ambient_light);
-				render_params->putpixel_f(x, y, color_to_uint32(&light), render_params->putpixel_data);
 			}
-			else
-				render_params->putpixel_f(x, y, 0xFF, render_params->putpixel_data);
+			putpixel_f(x, y, color_to_uint32(&light), putpixel_data);
 			y++;
+		}
+		if (x % (height / 100) == 0)
+		{
+			printf("\rrendering %d%%", (int)((double)(x * height + y) / (width * height) * 100));
+			fflush(stdout);
 		}
 		x++;
 	}
+	printf("\rrendering done\n" SHOW_CURSOR);
+	fflush(stdout);
 	return (0);
 }

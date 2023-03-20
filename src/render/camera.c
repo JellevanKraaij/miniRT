@@ -6,29 +6,28 @@
  
 # include <stdio.h>
 
-t_camera *camera_new(const t_vec3 position, const t_vec3 direction, double aspect_ratio, double hfov)
+t_camera *camera_new(const t_vec3 position, const t_vec3 direction, double hfov)
 {
 	t_camera *ret = malloc(sizeof(t_camera));
 	if (ret == NULL)
 		return (NULL);
 
-	camera_update(ret, position, direction, aspect_ratio, hfov);
+	camera_update(ret, position, direction, hfov);
 	return (ret);
 }
 
-void camera_update(t_camera *camera, const t_vec3 position, const t_vec3 direction, double aspect_ratio, double hfov)
+void camera_update(t_camera *camera, const t_vec3 position, const t_vec3 direction, double hfov)
 {
 	camera->position = position;
 	camera->direction = direction;
-	camera->aspect_ratio = aspect_ratio;
 	camera->hfov = hfov;
 }
 
-void camera_prepare(t_camera *camera)
+void camera_prepare(t_camera *camera, double aspect_ratio)
 {
 	const t_vec3	camera_up = vec3_new(0, 1, 0);
 	const double viewport_width = 2.0 * tan(to_radians(camera->hfov) / 2);
-	const double viewport_height = viewport_width / camera->aspect_ratio;
+	const double viewport_height = viewport_width / aspect_ratio;
 	
 
 	t_vec3	w = vec3_normalize_c(vec3_reverse(&camera->direction));

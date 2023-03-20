@@ -28,6 +28,13 @@ set (CMAKE_C_FLAGS_DEBUG "-g -fsanitize=address") #cmake -DCMAKE_BUILD_TYPE=DEBU
 set (CMAKE_C_FLAGS_RELEASE "-O3 -Ofast") #cmake -DCMAKE_BUILD_TYPE=RELEASE to add release flags
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON) #vscode include path checking
 
+# add -gprof flag to compile and link if GPROF is set to ON
+if (GPROF)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pg")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+endif()
+
 #make executable with output name specified under EXEC_NAME and sources specified under SRCS
 add_executable(${EXEC_NAME} ${SRCS} ${SRCS_MAIN})
 target_include_directories(${EXEC_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -41,7 +48,6 @@ target_link_libraries(${EXEC_NAME} PRIVATE ft)
 target_link_libraries(${EXEC_NAME} PRIVATE get_next_line)
 target_link_libraries(${EXEC_NAME} PRIVATE vec3)
 target_link_libraries(${EXEC_NAME} PRIVATE mlx42)
-
 
 #-------------------- TESTING -------------------------------
 

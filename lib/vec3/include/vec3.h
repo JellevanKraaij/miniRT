@@ -54,6 +54,9 @@ VEC3_TYPE vec3_lenght_squared_c(const t_vec3 lhs);
 t_vec3	vec3_normalize(const t_vec3 *vec);
 t_vec3	vec3_normalize_c(const t_vec3 vec);
 
+t_vec3	vec3_reflect(const t_vec3 *v, const t_vec3 *n);
+t_vec3	vec3_reflect_c(const t_vec3 v, const t_vec3 n);
+
 // (Comparisons)
 bool vec3_eq(const t_vec3 *lhs, const t_vec3 *rhs);
 bool vec3_eq_c(const t_vec3 lhs, const t_vec3 rhs);

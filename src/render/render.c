@@ -8,22 +8,6 @@
 #define HIDE_CURSOR "\e[?25l"
 #define SHOW_CURSOR "\e[?25h"
 
-double screenx_to_modelx(uint32_t x, uint32_t width)
-{
-	return ((double)x / (width - 1));
-}
-
-double screeny_to_modely(uint32_t y, uint32_t height)
-{
-	return (1.0 - ((double)y / (height - 1)));
-}
-
-t_vec3 vec3_reflect(const t_vec3 *v, const t_vec3 *n)
-{
-	t_vec3 reflected = vec3_subtract_c(*v, vec3_scalar_c(*n, 2 * vec3_dot(v, n)));
-	return (reflected);
-}
-
 t_vec3 calculate_specular_light(const t_light *light, const t_ray *light_ray, const t_ray *camera_ray, const t_hit_record *hit_record)
 {
 	t_vec3 specular_light = light->color;
@@ -48,6 +32,27 @@ t_vec3 calculate_light_factor(const t_light *light, const t_ray *light_ray, cons
 	return (light_factor);
 }
 
+t_vec3 ray_to_color(const t_ray *ray, const t_hittable_array *hittables, const t_light *light, const t_vec3 *ambient_light)
+{
+	t_hit_record hit_record;
+	t_vec3 light_color = VEC3_ZERO;
+	if (hittable_array_hit(hittables, ray, &hit_record))
+	{
+		const t_vec3 *obj_color = &hit_record.object->color;
+		t_ray light_ray = light_generate_ray(light, &hit_record);
+		if (!hittable_array_hit(hittables, &light_ray, NULL))
+		{
+			t_vec3 point_light = calculate_light_factor(light, &light_ray, &hit_record);
+			color_add(&light_color, obj_color, &point_light);
+
+			t_vec3 specular_light = calculate_specular_light(light, &light_ray, ray, &hit_record);
+			color_add(&light_color, &light->color, &specular_light);
+		}
+		color_add(&light_color, obj_color, ambient_light);
+	}
+	return (light_color);
+}
+
 int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpixel_data, uint32_t width, uint32_t height)
 {
 	uint32_t	x;
@@ -56,31 +61,30 @@ int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpix
 	camera_prepare(render_params->camera, (double)width / (double)height);
 	x = 0;
 	printf(HIDE_CURSOR);
+
 	while (x < width)
 	{
 		y = 0;
 		while (y < height)
 		{
-			t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width), screeny_to_modely(y, height));
-			t_hit_record hit_record;
-			t_vec3 light = VEC3_ZERO;
-			if (hittable_array_hit(render_params->hittables, &ray, &hit_record))
+			t_vec3 color = VEC3_ZERO;
+			if (render_params->samples_per_pixel == 1)
 			{
-				const t_vec3 *obj_color = &hit_record.object->color;
-	
-				t_ray light_ray = light_generate_ray(render_params->light, &hit_record);
-				if (!hittable_array_hit(render_params->hittables, &light_ray, NULL))
-				{
-					t_vec3 point_light = calculate_light_factor(render_params->light, &light_ray, &hit_record);
-					color_add(&light, obj_color, &point_light);
-
-					t_vec3 specular_light = calculate_specular_light(render_params->light, &light_ray, &ray, &hit_record);
-					t_vec3 white = vec3_new(1,1,1);
-					color_add(&light, &white, &specular_light);
-				}
-				color_add(&light, obj_color, &render_params->ambient_light);
+				t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width), screeny_to_modely(y, height));
+				color = ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light);
 			}
-			putpixel_f(x, y, color_to_uint32(&light), putpixel_data);
+			else if (render_params->samples_per_pixel > 1)
+			{
+				for (unsigned int i = 0; i < render_params->samples_per_pixel; i++)
+				{
+					double u = screenx_to_modelx(x, width) + random_double() / (double)width;
+					double v = screeny_to_modely(y, height) + random_double() / (double)height;
+					t_ray ray = camera_generate_ray(render_params->camera, u, v);
+					color = vec3_add_c(color, ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light));
+				}
+				color = vec3_scalar(&color, 1.0 / (double)render_params->samples_per_pixel);
+			}
+			putpixel_f(x, y, color_to_uint32(&color), putpixel_data);
 			y++;
 		}
 		if (x % (height / 100) == 0)

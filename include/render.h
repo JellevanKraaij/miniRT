@@ -19,7 +19,7 @@ typedef struct s_render_params
 	t_light 		*light;
 	t_vec3	 		ambient_light;
 	t_camera		*camera;
-
+	unsigned int	samples_per_pixel;
 }	t_render_params;
 
 t_render_params *render_params_new(void);
@@ -29,5 +29,8 @@ int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpix
 
 double to_degrees(double radians);
 double to_radians(double degrees);
+double screenx_to_modelx(uint32_t x, uint32_t width);
+double screeny_to_modely(uint32_t y, uint32_t height);
+double random_double(void);
 
 #endif

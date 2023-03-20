@@ -63,6 +63,7 @@ t_render_params	*sample_config(void)
 	render_params->light = light_new(vec3_new(-2, 0, 0), vec3_new(1, 1, 1), 0.8);
 	render_params->ambient_light = vec3_scalar_c(vec3_new(1, 1, 1), 0.2);
 	render_params->hittables = hittable_array_new(2); //TODO: protect null
+	render_params->samples_per_pixel = 50;
 
 	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 5), (t_vec3){}, vec3_new(0, 0, 1), 10, sphere_new(1)));
 	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0.3, 3), (t_vec3){}, vec3_new(0.8, 0, 0), 10, sphere_new(0.3)));

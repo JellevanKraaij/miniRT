@@ -18,6 +18,7 @@ set (SRCS
 	src/reverse.c
 	src/defines.c
 	src/reflect.c
+	src/clamp.c
 )
 
 add_library(vec3 STATIC ${SRCS})

@@ -19,6 +19,7 @@ set (SRCS
     src/render/hittables/hittable_array.c
     src/render/color.c
     src/render/hit_record.c
+    src/hooks.c
 )
 set (EXEC_NAME miniRT)
 

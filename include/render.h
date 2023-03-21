@@ -11,7 +11,7 @@
 
 #define RENDER_SHADOW_BIAS 0.0001
 
-typedef int (*t_putpixel_f)(uint32_t x, uint32_t y, uint32_t color, void *data);
+typedef int (*t_putpixel_f)(uint32_t x, uint32_t y, t_vec3 color, void *data);
 
 typedef struct s_render_params
 {
@@ -19,7 +19,6 @@ typedef struct s_render_params
 	t_light 		*light;
 	t_vec3	 		ambient_light;
 	t_camera		*camera;
-	unsigned int	samples_per_pixel;
 }	t_render_params;
 
 t_render_params *render_params_new(void);

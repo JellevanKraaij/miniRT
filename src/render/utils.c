@@ -14,12 +14,16 @@ double to_radians(double degrees)
 
 double screenx_to_modelx(uint32_t x, uint32_t width)
 {
-	return ((double)x / (width - 1));
+	if (width == 1)
+		return (0);
+	return ((double)x / (width));
 }
 
 double screeny_to_modely(uint32_t y, uint32_t height)
 {
-	return (1 - ((double)y / (height - 1)));
+	if (height == 1)
+		return (0);
+	return (1 - ((double)y / (height)));
 }
 
 double random_double(void)

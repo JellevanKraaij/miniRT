@@ -4,6 +4,7 @@
 #include  <float.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 #define HIDE_CURSOR "\e[?25l"
 #define SHOW_CURSOR "\e[?25h"
@@ -53,11 +54,18 @@ t_vec3 ray_to_color(const t_ray *ray, const t_hittable_array *hittables, const t
 	return (light_color);
 }
 
+double jitter(uint32_t max)
+{
+	return (random_double() / (double)max);
+}
+
 int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpixel_data, uint32_t width, uint32_t height)
 {
 	uint32_t	x;
 	uint32_t	y;
 
+	if (width == 0 || height == 0)
+		return (1);
 	camera_prepare(render_params->camera, (double)width / (double)height);
 	x = 0;
 	printf(HIDE_CURSOR);
@@ -68,26 +76,13 @@ int	render(t_render_params *render_params, t_putpixel_f putpixel_f, void *putpix
 		while (y < height)
 		{
 			t_vec3 color = VEC3_ZERO;
-			if (render_params->samples_per_pixel == 1)
-			{
-				t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width), screeny_to_modely(y, height));
-				color = ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light);
-			}
-			else if (render_params->samples_per_pixel > 1)
-			{
-				for (unsigned int i = 0; i < render_params->samples_per_pixel; i++)
-				{
-					double u = screenx_to_modelx(x, width) + random_double() / (double)width;
-					double v = screeny_to_modely(y, height) + random_double() / (double)height;
-					t_ray ray = camera_generate_ray(render_params->camera, u, v);
-					color = vec3_add_c(color, ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light));
-				}
-				color = vec3_scalar(&color, 1.0 / (double)render_params->samples_per_pixel);
-			}
-			putpixel_f(x, y, color_to_uint32(&color), putpixel_data);
+
+			t_ray ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width) + jitter(width), screeny_to_modely(y, height) + jitter(height));
+			color = ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light);
+			putpixel_f(x, y, vec3_clamp(&color, 0, 1), putpixel_data);
 			y++;
 		}
-		if (x % (height / 100) == 0)
+		if ((height / 100) != 0 && x % (height / 100) == 0)
 		{
 			printf("\rrendering %d%%", (int)((double)(x * height + y) / (width * height) * 100));
 			fflush(stdout);

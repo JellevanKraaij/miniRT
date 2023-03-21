@@ -39,6 +39,9 @@ t_vec3	vec3_reverse_c(const t_vec3 vec);
 
 // (Advanced calculations)
 
+t_vec3 vec3_clamp(const t_vec3 *vec, const VEC3_TYPE min, const VEC3_TYPE max);
+t_vec3 vec3_clamp_c(const t_vec3 vec, const VEC3_TYPE min, const VEC3_TYPE max);
+
 VEC3_TYPE	vec3_dot(const t_vec3 *lhs, const t_vec3 *rhs);
 VEC3_TYPE	vec3_dot_c(const t_vec3 lhs, const t_vec3 rhs);
 

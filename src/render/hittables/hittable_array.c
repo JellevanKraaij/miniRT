@@ -67,7 +67,7 @@ bool hittable_array_hit(const t_hittable_array *list, const t_ray *ray, t_hit_re
 			if (hit_record == NULL)
 				return (true);
 			hit_anything = true;
-			if (tmp.distance < closest.distance)
+			if (tmp.distance <= closest.distance)
 				closest = tmp;
 		}
 		i++;

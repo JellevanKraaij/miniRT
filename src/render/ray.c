@@ -1,4 +1,4 @@
-#include "ray.h"
+#include "render/ray.h"
 #include <libft.h>
 
 t_ray ray_new(const t_vec3 *origin, const t_vec3 *direction, const double min_distance, const double max_distance)

@@ -1,4 +1,4 @@
-#include "hit_record.h"
+#include "render/hit_record.h"
 
 void hit_record_set_normal(t_hit_record *record, const t_ray *ray, const t_vec3 *outward_normal)
 {

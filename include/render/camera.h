@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include <vec3.h>
-#include <ray.h>
+#include "render/ray.h"
 
 typedef struct s_camera
 {

@@ -1,5 +1,5 @@
-#include "camera.h"
-#include "render.h"
+#include "render/camera.h"
+#include "render/render.h"
 #include <math.h>
 #include <libft.h>
 #include <float.h>

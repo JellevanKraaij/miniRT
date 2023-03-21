@@ -1,7 +1,7 @@
-#include <hittables/hittable.h>
-#include "hittables/sphere.h"
-#include "hittables/plane.h"
-#include "ray.h"
+#include <render/hittables/hittable.h>
+#include "render/hittables/sphere.h"
+#include "render/hittables/plane.h"
+#include "render/ray.h"
 
 #include <libft.h>
 #include <float.h>

@@ -1,4 +1,4 @@
-#include "color.h"
+#include "render/color.h"
 
 void color_add(t_vec3 *light, const t_vec3 *color, const t_vec3 *add)
 {

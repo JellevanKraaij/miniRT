@@ -1,8 +1,8 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "hittables/hittable.h"
-#include "ray.h"
+#include "render/hittables/hittable.h"
+#include "render/ray.h"
 
 typedef struct s_sphere
 {

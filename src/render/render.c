@@ -1,10 +1,10 @@
-#include "render.h"
-#include "hittables/hittable.h"
-#include "hittables/array.h"
-#include  <float.h>
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
+#include <math.h>
+
+#include "render/render.h"
+#include "render/hittables/hittable.h"
+#include "render/hittables/array.h"
 
 #define HIDE_CURSOR "\e[?25l"
 #define SHOW_CURSOR "\e[?25h"

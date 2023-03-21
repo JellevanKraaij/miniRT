@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-	#include "camera.h"
+	#include "render/camera.h"
 	#include <stdbool.h>
 }
 

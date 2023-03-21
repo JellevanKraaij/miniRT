@@ -2,7 +2,7 @@
 #define HOOK_H
 
 #include <MLX42/MLX42.h>
-#include "render.h"
+#include "render/render.h"
 
 typedef struct s_hook_data
 {

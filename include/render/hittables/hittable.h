@@ -9,8 +9,8 @@ typedef struct s_hittable t_hittable;
 typedef struct s_hittable_data t_hittable_data;
 typedef enum e_hittable_object_type t_hittable_type;
 
-#include "ray.h"
-#include "hit_record.h"
+#include "render/ray.h"
+#include "render/hit_record.h"
 
 enum e_hittable_object_type
 {

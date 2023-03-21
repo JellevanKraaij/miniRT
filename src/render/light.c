@@ -1,5 +1,5 @@
-#include "light.h"
-#include "render.h"
+#include "render/light.h"
+#include "render/render.h"
 
 #include <stdlib.h>
 

@@ -1,4 +1,4 @@
-#include "hittables/plane.h"
+#include "render/hittables/plane.h"
 
 #include <stddef.h>
 #include <stdlib.h>

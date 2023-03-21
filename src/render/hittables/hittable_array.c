@@ -1,4 +1,4 @@
-#include "hittables/array.h"
+#include "render/hittables/array.h"
 #include <float.h>
 #include <stdlib.h>
 #include <libft.h>

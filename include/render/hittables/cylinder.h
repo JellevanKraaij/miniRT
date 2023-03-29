@@ -6,8 +6,8 @@
 
 typedef struct s_cylinder
 {
-	t_vec3	topcenter;
 	double	radius;
+	double	height;
 }	t_cylinder;
 
 t_hittable_data	cylinder_new(const double radius, const double height);

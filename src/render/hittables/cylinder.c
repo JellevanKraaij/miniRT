@@ -5,15 +5,16 @@
 #include <math.h>
 #include <float.h>
 
+#include <stdio.h>
+
 t_hittable_data cylinder_new(const double radius, const double height)
 {
 	t_cylinder	*cylinder;
-
 	cylinder = malloc(sizeof(t_cylinder));
 	if (cylinder == NULL)
-		return ((t_hittable_data){.data = NULL});
+		return ((t_hittable_data){.data = NULL, .type = ERROR});
 	cylinder->radius = radius;
-	cylinder->topcenter.data[1] = height;
+	cylinder->height = height;
 	return ((t_hittable_data){.data = cylinder, .type = CYLINDER});
 }
 
@@ -42,35 +43,53 @@ void cylinder_destroy(void *data)
 
 bool cylinder_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record)
 {
-	double	a;
-	double	c;
-	double	half_b;
-	double	discriminant;
-	t_vec3	h; 
-	t_vec3	w;
-
-	w = vec3_subtract(&ray->origin, &hittable->center);
-	h = vec3_normalize_c(vec3_subtract(&((t_cylinder *)hittable->data.data)->topcenter, &hittable->center));
-	a = vec3_lenght_squared(&ray->direction) - vec3_dot(&ray->direction, &h) * vec3_dot(&ray->direction, &h);
-	half_b = vec3_dot(&ray->direction, &w) - vec3_dot(&ray->direction, &h) * vec3_dot(&w, &h);
-	c = vec3_lenght_squared(&w) - pow(vec3_dot(&w, &h), 2) - pow(((t_cylinder *)hittable->data.data)->radius, 2);
-	discriminant = half_b * half_b - a * c;
+	t_vec3	oc = vec3_subtract(&ray->origin, &hittable->center);
+	double a = vec3_dot(&ray->direction, &ray->direction) - vec3_dot(&ray->direction, &hittable->orientation) * vec3_dot(&ray->direction, &hittable->orientation);
+	double b = 2 * (vec3_dot(&ray->direction, &oc) - (vec3_dot(&ray->direction, &hittable->orientation) * vec3_dot(&oc, &hittable->orientation)));
+	double c = vec3_dot(&oc, &oc) - (vec3_dot(&oc, &hittable->orientation) * vec3_dot(&oc, &hittable->orientation)) - (((t_cylinder *)hittable->data.data)->radius * ((t_cylinder *)hittable->data.data)->radius);
+	
+	double discriminant = (b * b) - (4 * a * c);
 	if (discriminant < 0)
 		return (false);
+	
 	double sqrtd = sqrt(discriminant);
-	double root = (-half_b - sqrtd) / a;
+	double root = (-b - sqrtd) / (a * 2);
 	if (root < ray->min_distance || ray->max_distance < root)
 	{
-		root = (-half_b + sqrtd) / a;
+		root = (-b + sqrtd) / (a * 2);
 		if (root < ray->min_distance || ray->max_distance < root)
 			return (false);
 	}
+
+	t_vec3 point = ray_at(ray, root);
+
+	t_vec3 CP = vec3_subtract(&point, &hittable->center);
+	double CP_len = vec3_lenght(&CP);
+
+	double CQ_len = sqrt((CP_len * CP_len) - (((t_cylinder *)hittable->data.data)->radius * ((t_cylinder *)hittable->data.data)->radius));
+
+	if (CQ_len > ((t_cylinder *)hittable->data.data)->height / 2)
+		return (false);
+
 	if (hit_record == NULL)
 		return (true);
+
 	hit_record->distance = root;
-	hit_record->point = ray_at(ray, root);
+	hit_record->point = point;
 	hit_record->object = hittable;
-	const t_vec3 normal = vec3_divide_c(vec3_subtract(&hit_record->point, &hittable->center), ((t_cylinder *)hittable->data.data)->radius);
+	
+
+
+	// printf ("CP_len: %f CQ_len: %f radius: %f\n", CP_len, CQ_len, ((t_cylinder *)hittable->data.data)->radius);
+
+	t_vec3 CQ = vec3_scalar(&hittable->orientation, CQ_len);
+
+	t_vec3 Q = vec3_add(&hittable->center, &CQ);
+
+	t_vec3 normal = vec3_subtract(&hit_record->point, &Q);
+
+	normal = vec3_normalize(&normal);
+
 	hit_record_set_normal(hit_record, ray, &normal);
 	return (true);
 }

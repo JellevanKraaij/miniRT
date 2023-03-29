@@ -33,7 +33,7 @@ t_hittable	*hittable_new(const t_vec3 center, const t_vec3 orientation, const t_
 	if (new == NULL)
 		return (NULL);
 	new->center = center;
-	new->orientation = orientation;
+	new->orientation = vec3_normalize(&orientation);
 	new->color = color;
 	new->data = data;
 	new->specular = specular;

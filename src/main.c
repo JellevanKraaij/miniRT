@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "render/hittables/sphere.h"
+#include "render/hittables/cylinder.h"
 #include "render/hittables/array.h"
 #include "render/hittables/plane.h"
 
@@ -22,7 +23,7 @@ t_render_params	*sample_config(void)
 	render_params->hittables = hittable_array_new(2); //TODO: protect null
 
 	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 5), (t_vec3){}, vec3_new(0, 0, 1), 10, sphere_new(1)));
-	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0.3, 3), (t_vec3){}, vec3_new(0.8, 0, 0), 10, sphere_new(0.3)));
+	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(1, 0.3, 3), vec3_new(.3, 1, .6), vec3_new(0.8, 0, 0), 10, cylinder_new(0.3, 1)));
 	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 10), vec3_new(0, 0, 1), vec3_new(0, 0.6, 0), 20, plane_new())); //TODO: protect null
 	
 	// hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, -10, 0), vec3_new(0, -1, 0), vec3_new(0, 0.8, 0.8), 10, plane_new())); //TODO: protect null

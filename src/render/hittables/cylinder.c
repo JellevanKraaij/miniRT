@@ -92,8 +92,8 @@ bool cylinder_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hi
 	t_vec3 point = ray_at(ray, root);
 
 	t_vec3 CP = vec3_subtract(&point, &hittable->center);
-	double CP_len = vec3_lenght(&CP);
 
+	double CP_len = vec3_lenght(&CP);
 	double CQ_len = sqrt((CP_len * CP_len) - (((t_cylinder *)hittable->data.data)->radius * ((t_cylinder *)hittable->data.data)->radius));
 
 	if (CQ_len > ((t_cylinder *)hittable->data.data)->height / 2)
@@ -102,10 +102,25 @@ bool cylinder_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hi
 	if (hit_record == NULL)
 		return (true);
 
+	t_vec3 CQ = vec3_scalar(&hittable->orientation, CQ_len);
+	t_vec3 Q1 = vec3_add(&hittable->center, &CQ);
+	t_vec3 Q2 = vec3_subtract(&hittable->center, &CQ);
+	t_vec3 QP1 = vec3_subtract(&point, &Q1);
+	t_vec3 QP2 = vec3_subtract(&point, &Q2);
+	double QP1_len = vec3_lenght_squared(&QP1);
+	double QP2_len = vec3_lenght_squared(&QP2);
+
+	t_vec3 QP;
+	if (QP1_len < QP2_len)
+		QP = QP1;
+	else
+		QP = QP2;
+
 	hit_record->distance = root;
 	hit_record->point = point;
 	hit_record->object = hittable;
 	
-	hit_record_set_normal(hit_record, ray, &VEC3_ZERO);
+	t_vec3 normal = vec3_normalize(&QP);
+	hit_record_set_normal(hit_record, ray, &normal);
 	return (true);
 }

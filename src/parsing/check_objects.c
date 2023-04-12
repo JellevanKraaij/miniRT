@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:31 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/12 19:45:31 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/12 20:34:21 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,27 @@ int	check_plane(char **str, t_render_params *render_params)
 // ∗ the cylinder diameter: 14.2
 // ∗ the cylinder height: 21.42
 // ∗ R,G,B colors in range [0,255]: 10, 0, 255
-
-// int	check_cylinder(char **str, t_render_params *render_params)
-// {
-// 	double	radius;
-// 	double	height;
+/*
+int	check_cylinder(char **str, t_render_params *render_params)
+{
+	double	radius;
+	double	height;
 	
-// 	if (count_array(str) != 6)
-// 		return (print_error(n_args_er), 1);
-// 	if (check_value_range(str[2], -1, 1) || \
-// 		check_value_range(str[5], 0, 255) || \
-// 		checkiftof(str[3]) || checkiftof(str[4]))
-// 		return (print_error(outofrange), 1);
-// 	radius = ft_atof(str[3]) * 0.5;
-// 	height = ft_atof(str[4]);
-// 	hittable_array_append(&render_params->hittables, \
-// 	hittable_new(convert_array_to_vector(str[1]), \
-// 	convert_array_to_vector(str[2]), \
-// 	convert_array_to_vector(str[5]), 30, cylinder_new(radius, height)));
-// 	return (0);
-// }
+	if (count_array(str) != 6)
+		return (print_error(n_args_er), 1);
+	if (check_value_range(str[2], -1, 1) || \
+		check_value_range(str[5], 0, 255) || \
+		checkiftof(str[3]) || checkiftof(str[4]))
+		return (print_error(outofrange), 1);
+	radius = ft_atof(str[3]) * 0.5;
+	height = ft_atof(str[4]);
+	hittable_array_append(&render_params->hittables, \
+	hittable_new(convert_array_to_vector(str[1]), \
+	convert_array_to_vector(str[2]), \
+	convert_array_to_vector(str[5]), 30, cylinder_new(radius, height)));
+	return (0);
+}
+*/
 
 // ∗ identifier: co
 // ∗ x,y,z coordinates of the center of the cone: 50.0,0.0,20.6
@@ -90,22 +91,24 @@ int	check_plane(char **str, t_render_params *render_params)
 // ∗ the cone height: 21.42
 // ∗ R,G,B colors in range [0,255]: 10, 0, 255
 
-// int	check_cone(char **str, t_render_params *render_params)
-// {
-// 	double	radius;
-// 	double	height;
+/*
+int	check_cone(char **str, t_render_params *render_params)
+{
+	double	radius;
+	double	height;
 	
-// 	if (count_array(str) != 6)
-// 		return (print_error(n_args_er), 1);
-// 	if (check_value_range(str[2], -1, 1) || \
-// 		check_value_range(str[5], 0, 255) || checkiftof(str[4]) || \
-// 			(checkiftof(str[4])))
-// 		return (print_error(outofrange), 1);
-// 	radius = ft_atof(str[3]) * 0.5;
-// 	height = ft_atof(str[4]);
-// 	hittable_array_append(&render_params->hittables, \
-// 	hittable_new(convert_array_to_vector(str[1]), \
-// 	convert_array_to_vector(str[2]), \
-// 	convert_array_to_vector(str[3]), 30, cone_new(radius, height)));
-// 	return (0);
-// }
+	if (count_array(str) != 6)
+		return (print_error(n_args_er), 1);
+	if (check_value_range(str[2], -1, 1) || \
+		check_value_range(str[5], 0, 255) || checkiftof(str[4]) || \
+			(checkiftof(str[4])))
+		return (print_error(outofrange), 1);
+	radius = ft_atof(str[3]) * 0.5;
+	height = ft_atof(str[4]);
+	hittable_array_append(&render_params->hittables, \
+	hittable_new(convert_array_to_vector(str[1]), \
+	convert_array_to_vector(str[2]), \
+	convert_array_to_vector(str[3]), 30, cone_new(radius, height)));
+	return (0);
+}
+*/

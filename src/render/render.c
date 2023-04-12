@@ -10,7 +10,7 @@
 #define SHOW_CURSOR "\e[?25h"
 
 t_vec3	ray_to_color(const t_ray *ray, const t_hittable_array *hittables, \
-		const t_point_light *light, const t_vec3 *ambient_light)
+		const t_point_light *light, const t_ambient *ambient)
 {
 	t_hit_record	hit_record;
 	t_vec3			light_color;
@@ -19,7 +19,7 @@ t_vec3	ray_to_color(const t_ray *ray, const t_hittable_array *hittables, \
 	if (hittable_array_hit(hittables, ray, &hit_record))
 	{
 		light_color = point_light_get_color(light, &hit_record, hittables);
-		color_add(&light_color, &hit_record.object->color, ambient_light);
+		color_add(&light_color, &hit_record.object->color, ambient_color(ambient));
 	}
 	return (light_color);
 }
@@ -48,7 +48,7 @@ int	render(t_render_params *render_params, \
 		while (y < height)
 		{
 			ray = camera_generate_ray(render_params->camera, screenx_to_modelx(x, width) + jitter(width), screeny_to_modely(y, height) + jitter(height));
-			color = ray_to_color(&ray, render_params->hittables, render_params->light, &render_params->ambient_light);
+			color = ray_to_color(&ray, render_params->hittables, render_params->light, render_params->ambient);
 			pixelcallback.function(x, y, vec3_clamp(&color, 0, 1), pixelcallback.data);
 			y++;
 		}

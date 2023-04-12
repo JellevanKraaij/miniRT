@@ -13,6 +13,8 @@ typedef struct s_hittable			t_hittable;
 typedef struct s_hittable_data		t_hittable_data;
 typedef enum e_hittable_object_type	t_hittable_type;
 
+typedef struct s_hit_record			t_hit_record;
+
 enum e_hittable_object_type
 {
 	ERROR = -1,

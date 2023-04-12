@@ -4,6 +4,8 @@
 # include <vec3.h>
 # include "hittables/hittable.h"
 
+typedef struct s_hittable	t_hittable;
+
 typedef struct s_hit_record
 {
 	const t_hittable	*object;

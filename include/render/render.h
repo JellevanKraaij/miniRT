@@ -27,7 +27,6 @@ typedef struct s_pixelcallback
 	void				*data;
 }	t_pixelcallback;
 
-
 t_render_params	*render_params_new(void);
 void			render_params_destroy(t_render_params *render_params);
 

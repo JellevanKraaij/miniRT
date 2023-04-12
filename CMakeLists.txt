@@ -7,7 +7,6 @@ set (SRCS_MAIN
 )
 
 set (SRCS
-    src/main.c
     src/string_utilities.c
     src/parsing/check_filmset.c
     src/parsing/check_file_args.c

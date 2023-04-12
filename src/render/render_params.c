@@ -1,4 +1,5 @@
 #include "render/render.h"
+#include "render/point_light.h"
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -21,6 +22,6 @@ void render_params_destroy(t_render_params *render_params)
 		return ;
 	hittable_array_destroy(render_params->hittables);
 	camera_destroy(render_params->camera);
-	light_destroy(render_params->light);
+	point_light_destroy(render_params->light);
 	free(render_params);
 }

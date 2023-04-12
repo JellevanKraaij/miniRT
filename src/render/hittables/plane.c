@@ -31,5 +31,8 @@ bool plane_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_r
 
 	hit_record_set_normal(hit_record, ray, &hittable->orientation);
 
+	hit_record->ray_direction = ray->direction;
+	hit_record->ray_origin = ray->origin;
+
 	return (true);
 }

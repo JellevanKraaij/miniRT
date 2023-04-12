@@ -44,7 +44,7 @@ t_vec3	point_light_get_color(const t_point_light *light, \
 	if (hittable_array_hit(hittables, &ray, NULL))
 		return (vec3_new(0, 0, 0));
 
-	light_color = VEC3_ZERO;
+	light_color = vec3_new(0, 0, 0);
 	point_light = calculate_light_factor(light, &ray, hit_record);
 	color_add(&light_color, &hit_record->object->color, &point_light);
 

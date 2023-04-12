@@ -15,7 +15,7 @@ t_vec3	ray_to_color(const t_ray *ray, const t_hittable_array *hittables, \
 	t_hit_record	hit_record;
 	t_vec3			light_color;
 
-	light_color = VEC3_ZERO;
+	light_color = vec3_new(0, 0, 0);
 	if (hittable_array_hit(hittables, ray, &hit_record))
 	{
 		light_color = point_light_get_color(light, &hit_record, hittables);

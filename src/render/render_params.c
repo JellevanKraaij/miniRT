@@ -3,9 +3,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-t_render_params *render_params_new(void)
+t_render_params	*render_params_new(void)
 {
-	t_render_params *render_params;
+	t_render_params	*render_params;
 
 	render_params = malloc(sizeof(t_render_params));
 	if (render_params == NULL)
@@ -16,7 +16,7 @@ t_render_params *render_params_new(void)
 	return (render_params);
 }
 
-void render_params_destroy(t_render_params *render_params)
+void	render_params_destroy(t_render_params *render_params)
 {
 	if (render_params == NULL)
 		return ;

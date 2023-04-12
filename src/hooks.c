@@ -36,7 +36,7 @@ void	renderhook(void *data)
 	if (hook_data->current_ray_per_pixel >= hook_data->max_ray_per_pixel)
 		return ;
 
-	render(hook_data->render_params, putpixel_f, hook_data, hook_data->width, hook_data->height);
+	render(hook_data->render_params, (t_pixelcallback){.function = putpixel_f, .data = hook_data}, hook_data->width, hook_data->height);
 	for (uint32_t y = 0; y < hook_data->height; y++)
 	{
 		for (uint32_t x = 0; x < hook_data->width; x++)

@@ -5,7 +5,7 @@
 #include <math.h>
 #include <float.h>
 
-t_hittable_data sphere_new(const double radius)
+t_hittable_data	sphere_new(const double radius)
 {
 	t_sphere	*sphere;
 
@@ -16,7 +16,7 @@ t_hittable_data sphere_new(const double radius)
 	return ((t_hittable_data){.data = sphere, .type = SPHERE});
 }
 
-void sphere_destroy(void *data)
+void	sphere_destroy(void *data)
 {
 	free(data);
 }

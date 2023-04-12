@@ -23,8 +23,8 @@ t_render_params	*sample_config(void)
 	render_params->hittables = hittable_array_new(2); //TODO: protect null
 
 	// hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 5), (t_vec3){}, vec3_new(0, 0, 1), 10, sphere_new(1)));
-	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(2, 0, 5), vec3_new(0, 1, 1), vec3_new(1, 0, 0), 10, sphere_new(1)));
-	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 10), vec3_new(0, 0, 1), vec3_new(0, 1, 0), 50, plane_new())); //TODO: protect null
+	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(2, 0, 5), vec3_new(0, 1, 1), vec3_new(1, 0, 0), sphere_new(1)));
+	hittable_array_append(&render_params->hittables, hittable_new(vec3_new(0, 0, 10), vec3_new(0, 0, 1), vec3_new(0, 1, 0), plane_new())); //TODO: protect null
 	
 	return (render_params);
 }

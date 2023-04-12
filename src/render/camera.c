@@ -12,7 +12,6 @@ t_camera	*camera_new(const t_vec3 position, \
 	ret = malloc(sizeof(t_camera));
 	if (ret == NULL)
 		return (NULL);
-
 	camera_update(ret, position, direction, hfov);
 	return (ret);
 }
@@ -35,7 +34,6 @@ void	camera_prepare(t_camera *camera, double aspect_ratio)
 
 	camera->horizontal = vec3_scalar(&u, viewport_width);
 	camera->vertical = vec3_scalar(&v, viewport_height);
-
 	camera->lower_left_corner = vec3_subtract_c(vec3_subtract_c(\
 		vec3_subtract_c(camera->position, vec3_divide(&camera->horizontal, 2)), \
 		vec3_divide(&camera->vertical, 2)), w);
@@ -51,9 +49,7 @@ t_ray	camera_generate_ray(const t_camera *camera, \
 		vec3_scalar(&camera->horizontal, width_pct));
 	direction = vec3_add_c(direction, \
 		vec3_scalar(&camera->vertical, height_pct));
-
 	direction = vec3_subtract(&direction, &camera->position);
-
 	return (ray_new(&camera->position, &direction, 0, DBL_MAX));
 }
 

@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/12 17:46:47 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/17 11:56:39 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static const t_jump_table	g_ptrs_to_checkf[] = {
 {.id = "C", .check_function = check_camera},
 {.id = "L", .check_function = check_light},
 {.id = "sp", .check_function = check_sphere},
-{.id = "pl", .check_function = check_plane}
-// {.id = "cy", .check_function = check_cylinder},
+{.id = "pl", .check_function = check_plane},
+// {.id = "cy", .check_function = check_cylinder}
 // {.id = "co", .check_function = check_cone}
 };
 
@@ -57,15 +57,15 @@ int	check_file_args(int fd, t_render_params *render_params)
 		free(next_line);
 		if (count_array(split_line) == 0)
 		{
-			free_dubarray(split_line);
+			ft_dstrfree(split_line);
 			continue ;
 		}
 		if (loop_to_checkfunction(split_line, render_params))
 		{
-			free_dubarray(split_line);
+			ft_dstrfree(split_line);
 			return (1);
 		}
-		free_dubarray(split_line);
+		ft_dstrfree(split_line);
 	}
 	return (0);
 }

@@ -1,5 +1,4 @@
 #include "render/hittables/sphere.h"
-
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
@@ -21,45 +20,50 @@ void	sphere_destroy(void *data)
 	free(data);
 }
 
-bool sphere_hit(const t_hittable *hittable, const t_ray *ray, t_hit_record *hit_record)
+void	initialize_sphere_abc(const t_hittable *hittable, const t_ray *ray, \
+t_hit_vars *hit_vars)
 {
-	t_vec3	oc;
-	double	a;
-	double	half_b;
-	double	c;
-	double	discriminant;
+	hit_vars->ray_pos = vec3_subtract(&ray->origin, &hittable->center);
+	hit_vars->a = vec3_lenght_squared(&ray->direction);
+	hit_vars->b = vec3_dot(&hit_vars->ray_pos, &ray->direction);
+	hit_vars->c = vec3_lenght_squared(&hit_vars->ray_pos) - \
+	pow((((t_sphere *)hittable->data.data)->radius, 2));
+	hit_vars->discriminant = pow(hit_vars->b, 2) - hit_vars->a * hit_vars->c;
+}
 
-	oc = vec3_subtract(&ray->origin, &hittable->center);
-	a = vec3_lenght_squared(&ray->direction);
-	half_b = vec3_dot(&oc, &ray->direction);
-	c = vec3_lenght_squared(&oc) - (((t_sphere *)hittable->data.data)->radius * ((t_sphere *)hittable->data.data)->radius);
-	discriminant = half_b * half_b - a * c;
-	if (discriminant < 0)
-		return (false);
-	
-	double sqrtd = sqrt(discriminant);
-
-	double root = (-half_b - sqrtd) / a;
-
-	if (root < ray->min_distance || ray->max_distance < root)
-	{
-		root = (-half_b + sqrtd) / a;
-		if (root < ray->min_distance || ray->max_distance < root)
-			return (false);
-	}
-
-	if (hit_record == NULL)
-		return (true);
+void	hit_record_assignment(const t_hittable *hittable, const t_ray *ray, \
+t_hit_record *hit_record, double root)
+{
+	t_vec3	normal;
 
 	hit_record->distance = root;
 	hit_record->point = ray_at(ray, root);
 	hit_record->object = hittable;
-	
-	const t_vec3 normal = vec3_divide_c(vec3_subtract(&hit_record->point, &hittable->center), ((t_sphere *)hittable->data.data)->radius);
+	normal = vec3_divide_c(vec3_subtract(&hit_record->point, \
+	&hittable->center), ((t_sphere *)hittable->data.data)->radius);
 	hit_record_set_normal(hit_record, ray, &normal);
-
 	hit_record->ray_direction = ray->direction;
 	hit_record->ray_origin = ray->origin;
+}
 
+bool	sphere_hit(const t_hittable *hittable, const t_ray *ray, \
+	t_hit_record *hit_record)
+{
+	t_hit_vars	hit_vars;
+	double		root;
+
+	initialize_sphere_abc(hittable, ray, &hit_vars);
+	if (hit_vars.discriminant < 0)
+		return (false);
+	root = (-hit_vars.b - sqrt(hit_vars.discriminant)) / hit_vars.a;
+	if (root < ray->min_distance || ray->max_distance < root)
+	{
+		root = (-hit_vars.b + sqrt(hit_vars.discriminant)) / hit_vars.a;
+		if (root < ray->min_distance || ray->max_distance < root)
+			return (false);
+	}
+	if (hit_record == NULL)
+		return (true);
+	hit_record_assignment(hittable, ray, hit_record, root);
 	return (true);
 }

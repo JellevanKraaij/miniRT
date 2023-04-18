@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:46:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/12 17:35:47 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/17 12:02:45 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ static const char	*g_error_messages[] = {
 	"Unusable file, '*.rt' and access rights required",
 	"Value is out of range",
 	"Cannot identify object",
-	"Malloc has failed us"
+	"Malloc has failed us",
+	"Argument was NULL"
 };
 
-void	print_error(int error_code)
+void	print_error(t_parse_errors error_code)
 {
 	printf("%s\n", g_error_messages[error_code]);
 }
@@ -47,13 +48,18 @@ int	check_file(char *file_name)
 		i++;
 	i--;
 	j = ft_strlen(dub_array[i]);
-	if (dub_array[i][j - 1] != 't' || dub_array[i][j - 2] != 'r' || \
-	dub_array[i][j - 3] != '.' || j < 4 || check_dot(dub_array[i]) > 1)
+	if (j < 4)
 	{
-		free_dubarray(dub_array);
+		ft_dstrfree(dub_array);
 		return (1);
 	}
-	free_dubarray(dub_array);
+	if (dub_array[i][j - 1] != 't' || dub_array[i][j - 2] != 'r' || \
+	dub_array[i][j - 3] != '.' || check_dot(dub_array[i]) > 1)
+	{
+		ft_dstrfree(dub_array);
+		return (1);
+	}
+	ft_dstrfree(dub_array);
 	return (0);
 }
 
@@ -82,11 +88,17 @@ int	check_value_range(char *str, double min, double max)
 	while (i < j)
 	{
 		if (checkiftof(dub_array[i]))
+		{
+			ft_dstrfree(dub_array);
 			return (1);
+		}
 		if (ft_atof(dub_array[i]) < min || ft_atof(dub_array[i]) > max)
+		{
+			ft_dstrfree(dub_array);
 			return (1);
+		}
 		i++;
 	}
-	free_dubarray(dub_array);
+	ft_dstrfree(dub_array);
 	return (0);
 }

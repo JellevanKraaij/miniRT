@@ -10,14 +10,15 @@
 #include "render/hittables/plane.h"
 #include "render/render.h"
 
-enum error_codes
+typedef enum error_codes
 {
 	n_args_er,
 	wrongfile,
 	outofrange,
 	object_er,
-	malloc_er
-};
+	malloc_er,
+	null_arg
+} t_parse_errors;
 
 typedef struct s_jump_table
 {
@@ -26,7 +27,7 @@ typedef struct s_jump_table
 } t_jump_table ;
 
 // error_handling
-void	print_error(int error_code);
+void	print_error(t_parse_errors error_code);
 void	*protec(void *ptr);
 int		check_file_args(int fd, t_render_params *render_params);
 int		check_value_range(char *str, double min, double max);
@@ -46,7 +47,6 @@ int		check_plane(char **str, t_render_params *render_params);
 
 // string_utilities
 t_vec3	convert_array_to_vector(char *str);
-void	free_dubarray(char **dubarray);
 int		count_array(char **splitted);
 int		check_dot(char *str);
 

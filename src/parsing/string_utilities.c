@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:47:14 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/12 16:26:46 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/17 11:57:13 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 t_vec3	convert_array_to_vector(char *str)
 {
 	char	**tmp_strs;
+	t_vec3	new_vector;
 
 	tmp_strs = protec(ft_split(str, ','));
-	return(vec3_new(ft_atof(tmp_strs[0]), ft_atof(tmp_strs[1]), \
-		ft_atof(tmp_strs[2])));
+	new_vector = vec3_new(ft_atof(tmp_strs[0]), ft_atof(tmp_strs[1]), \
+		ft_atof(tmp_strs[2]));
+	ft_dstrfree(tmp_strs);
+	return(new_vector);
 }
 
 int	check_dot(char *str)
@@ -45,19 +48,4 @@ int	count_array(char **splitted)
 	while (splitted[i] != NULL)
 		i++;
 	return (i);
-}
-
-void	free_dubarray(char **dubarray)
-{
-	int	i;
-
-	i = 0;
-	while (dubarray[i] != NULL)
-	{
-		free(dubarray[i]);
-		dubarray[i] = NULL;
-		i++;
-	}
-	free(dubarray);
-	dubarray = NULL;
 }

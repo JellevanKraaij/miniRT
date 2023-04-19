@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:20 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/17 12:11:22 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:29:57 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_ambient(char **str, t_render_params *render_params)
 	if ((str[0] == NULL) || (render_params == NULL))
 		return (print_error(null_arg), 1);
 	if (count_array(str) != 3)
-		return (print_error(n_args_er), 1);
+		return (print_error(incomplete), 1);
 	if (check_value_range(str[1], 0.0, 1.0) || \
 		check_value_range(str[2], 0.0, 255.0))
 		return (print_error(outofrange), 1);
@@ -48,7 +48,7 @@ int	check_camera(char **str, t_render_params *render_params)
 	if ((str[0] == NULL) || (render_params == NULL))
 		return (print_error(null_arg), 1);
 	if (count_array(str) != 4)
-		return (print_error(n_args_er), 1);
+		return (print_error(incomplete), 1);
 	if (check_value_range(str[1], -DBL_MAX, DBL_MAX) || \
 		check_value_range(str[2], -1.0, 1.0) || \
 		check_value_range(str[3], 0.0, 180.0))
@@ -71,7 +71,7 @@ int	check_light(char **str, t_render_params *render_params)
 	if ((str[0] == NULL) || (render_params == NULL))
 		return (print_error(null_arg), 1);
 	if (count_array(str) != 4 && count_array(str) != 3)
-		return (print_error(n_args_er), 1);
+		return (print_error(incomplete), 1);
 	if (check_value_range(str[1], -DBL_MAX, DBL_MAX) || \
 		check_value_range(str[2], 0.0, 1.0))
 		return (print_error(outofrange), 1);

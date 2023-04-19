@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:46:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/17 12:02:45 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:39:45 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static const char	*g_error_messages[] = {
 	"Unusable file, '*.rt' and access rights required",
 	"Value is out of range",
 	"Cannot identify object",
+	"object incomplete",
 	"Malloc has failed us",
 	"Argument was NULL"
 };

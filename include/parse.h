@@ -8,6 +8,7 @@
 #include "render/hittables/sphere.h"
 #include "render/ambient.h"
 #include "render/hittables/plane.h"
+#include "render/hittables/cylinder.h"
 #include "render/render.h"
 
 typedef enum error_codes
@@ -16,6 +17,7 @@ typedef enum error_codes
 	wrongfile,
 	outofrange,
 	object_er,
+	incomplete,
 	malloc_er,
 	null_arg
 } t_parse_errors;
@@ -40,7 +42,7 @@ int		check_camera(char **str, t_render_params *render_params);
 int		check_light(char **str, t_render_params *render_params);
 
 // check_objects
-// int		check_cylinder(char **str, t_render_params *render_params);
+int		check_cylinder(char **str, t_render_params *render_params);
 int		check_sphere(char **str, t_render_params *render_params);
 int		check_plane(char **str, t_render_params *render_params);
 // int		check_cone(char **str, t_render_params *render_params);

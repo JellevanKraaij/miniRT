@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/17 11:56:39 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:35:54 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static const t_jump_table	g_ptrs_to_checkf[] = {
 {.id = "L", .check_function = check_light},
 {.id = "sp", .check_function = check_sphere},
 {.id = "pl", .check_function = check_plane},
-// {.id = "cy", .check_function = check_cylinder}
+{.id = "cy", .check_function = check_cylinder}
 // {.id = "co", .check_function = check_cone}
 };
 
@@ -30,7 +30,7 @@ int	loop_to_checkfunction(char **split_line, t_render_params *render_params)
 	int	i;
 
 	i = 0;
-	while (i < 6)
+	while (i < 7)
 	{
 		if (!ft_strcmp(split_line[0], g_ptrs_to_checkf[i].id))
 		{

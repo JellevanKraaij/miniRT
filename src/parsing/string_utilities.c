@@ -6,11 +6,12 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:47:14 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/17 11:57:13 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 14:45:58 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parse.h>
+#include <stdio.h>
 
 t_vec3	convert_array_to_vector(char *str)
 {

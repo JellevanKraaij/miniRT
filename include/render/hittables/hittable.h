@@ -23,14 +23,14 @@ enum e_hittable_object_type
 	PLANE
 };
 
-typedef struct s_hit_variables
+typedef struct s_abc_variables
 {
-	t_vec3	ray_pos;
+	t_vec3	relative_raypos;
 	double	a;
 	double	b;
 	double	c;
 	double	discriminant;
-}	t_hit_vars;
+}	t_abc_vars;
 
 struct s_hittable_data
 {

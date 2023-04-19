@@ -32,7 +32,7 @@ typedef struct s_jump_table
 void	print_error(t_parse_errors error_code);
 void	*protec(void *ptr);
 int		check_file_args(int fd, t_render_params *render_params);
-int		check_value_range(char *str, double min, double max);
+int		check_value_range(char *str, double min, double max, int expected_len);
 int		check_file(char *file_name);
 int		checkiftof(char *str);
 

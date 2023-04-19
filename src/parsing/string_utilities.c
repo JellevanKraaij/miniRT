@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:47:14 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/19 14:45:58 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:29:48 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vec3	convert_array_to_vector(char *str)
 	new_vector = vec3_new(ft_atof(tmp_strs[0]), ft_atof(tmp_strs[1]), \
 		ft_atof(tmp_strs[2]));
 	ft_dstrfree(tmp_strs);
-	return(new_vector);
+	return (new_vector);
 }
 
 int	check_dot(char *str)

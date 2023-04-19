@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:46:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/19 14:39:45 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/19 17:30:29 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,22 @@ void	*protec(void *ptr)
 
 int	check_file(char *file_name)
 {
-	int		i;
-	int		j;
-	char	**dub_array;
+	int	i;
+	int	len;
 
-	i = 0;
-	dub_array = protec(ft_split(file_name, '/'));
-	while (dub_array[i])
+	if (!file_name)
+		return (1);
+	len = ft_strlen(file_name);
+	i = len;
+	while (file_name[i] != '/' && i > 0)
+		i--;
+	if (file_name[i] == '/')
 		i++;
-	i--;
-	j = ft_strlen(dub_array[i]);
-	if (j < 4)
-	{
-		ft_dstrfree(dub_array);
+	if (len - i < 4)
 		return (1);
-	}
-	if (dub_array[i][j - 1] != 't' || dub_array[i][j - 2] != 'r' || \
-	dub_array[i][j - 3] != '.' || check_dot(dub_array[i]) > 1)
-	{
-		ft_dstrfree(dub_array);
+	if ((file_name[len -3] != '.') || (file_name[len -2] != 'r') || \
+		(file_name[len -1] != 't'))
 		return (1);
-	}
-	ft_dstrfree(dub_array);
 	return (0);
 }
 
@@ -77,7 +71,7 @@ int	checkiftof(char *str)
 	return (0);
 }
 
-int	check_value_range(char *str, double min, double max)
+int	check_value_range(char *str, double min, double max, int expected_len)
 {
 	char	**dub_array;
 	int		i;
@@ -86,6 +80,8 @@ int	check_value_range(char *str, double min, double max)
 	dub_array = protec(ft_split(str, ','));
 	i = 0;
 	j = count_array(dub_array);
+	if (j != expected_len)
+		return (1);
 	while (i < j)
 	{
 		if (checkiftof(dub_array[i]))

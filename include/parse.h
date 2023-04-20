@@ -1,17 +1,17 @@
 #ifndef PARSE_H
 # define PARSE_H
 
-#include "MLX42/MLX42.h"
-#include <stdlib.h>
-#include <libft.h>
-#include <stdio.h>
-#include "render/hittables/sphere.h"
-#include "render/ambient.h"
-#include "render/hittables/plane.h"
-#include "render/hittables/cylinder.h"
-#include "render/render.h"
+# include "MLX42/MLX42.h"
+# include <stdlib.h>
+# include <libft.h>
+# include <stdio.h>
+# include "render/hittables/sphere.h"
+# include "render/ambient.h"
+# include "render/hittables/plane.h"
+# include "render/hittables/cylinder.h"
+# include "render/render.h"
 
-typedef enum error_codes
+typedef enum e_parse_errors
 {
 	N_ARGS_ER,
 	WRONGFILE,
@@ -20,13 +20,13 @@ typedef enum error_codes
 	INCOMPLETE,
 	MALLOC_ER,
 	NULL_ARG
-} t_parse_errors;
+}	t_parse_errors;
 
 typedef struct s_jump_table
 {
-	char *id;
-	int (*check_function)(char **, t_render_params *);
-} t_jump_table ;
+	char	*id;
+	int		(*check_function)(char **, t_render_params *);
+}	t_jump_table;
 
 // error_handling
 void	print_error(t_parse_errors error_code);

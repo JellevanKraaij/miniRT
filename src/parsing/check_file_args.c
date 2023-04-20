@@ -25,7 +25,7 @@ static const t_jump_table	g_ptrs_to_checkf[] = {
 // {.id = "co", .check_function = check_cone}
 };
 
-int	loop_to_checkfunction(char **split_line, t_render_params *render_params)
+int	parse_objects(char **split_line, t_render_params *render_params)
 {
 	size_t	i;
 
@@ -33,11 +33,8 @@ int	loop_to_checkfunction(char **split_line, t_render_params *render_params)
 	while (i < sizeof(g_ptrs_to_checkf) / sizeof(t_jump_table))
 	{
 		if (!ft_strcmp(split_line[0], g_ptrs_to_checkf[i].id))
-		{
-			if (g_ptrs_to_checkf[i].check_function(split_line, render_params))
-				return (1);
-			return (0);
-		}
+			return (g_ptrs_to_checkf[i].check_function(split_line, \
+				render_params));
 		i++;
 	}
 	return (print_error(OBJECT_ER), 1);
@@ -60,7 +57,7 @@ int	check_file_args(int fd, t_render_params *render_params)
 			ft_dstrfree(split_line);
 			continue ;
 		}
-		if (loop_to_checkfunction(split_line, render_params))
+		if (parse_objects(split_line, render_params))
 		{
 			ft_dstrfree(split_line);
 			return (1);

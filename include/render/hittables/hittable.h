@@ -20,7 +20,8 @@ enum e_hittable_object_type
 	ERROR = -1,
 	SPHERE,
 	CYLINDER,
-	PLANE
+	PLANE,
+	CIRCLE,
 };
 
 typedef struct s_abc_variables

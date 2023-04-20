@@ -1,11 +1,9 @@
 #include "render/hittables/plane.h"
-
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
 
-#include <stdio.h>
 t_hittable_data	plane_new(void)
 {
 	return ((t_hittable_data){.data = NULL, .type = PLANE});
@@ -19,8 +17,8 @@ void	plane_destroy(void *data)
 bool	plane_hit(const t_hittable *hittable, const t_ray *ray, \
 	t_hit_record *hit_record)
 {
-	double	t; 
-	
+	double	t;
+
 	t = vec3_dot_c(vec3_subtract(&hittable->center, \
 	&ray->origin), hittable->orientation) / \
 	vec3_dot(&ray->direction, &hittable->orientation);

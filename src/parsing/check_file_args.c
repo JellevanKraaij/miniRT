@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:45:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/19 14:35:54 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:49:34 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static const t_jump_table	g_ptrs_to_checkf[] = {
 
 int	loop_to_checkfunction(char **split_line, t_render_params *render_params)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (i < 7)
+	while (i < sizeof(g_ptrs_to_checkf) / sizeof(t_jump_table))
 	{
 		if (!ft_strcmp(split_line[0], g_ptrs_to_checkf[i].id))
 		{
@@ -40,7 +40,7 @@ int	loop_to_checkfunction(char **split_line, t_render_params *render_params)
 		}
 		i++;
 	}
-	return (print_error(object_er), 1);
+	return (print_error(OBJECT_ER), 1);
 }
 
 int	check_file_args(int fd, t_render_params *render_params)
@@ -55,7 +55,7 @@ int	check_file_args(int fd, t_render_params *render_params)
 			break ;
 		split_line = protec(ft_splitset(next_line, " \t\r\n\v\f"));
 		free(next_line);
-		if (count_array(split_line) == 0)
+		if (ft_dstrlen(split_line) == 0)
 		{
 			ft_dstrfree(split_line);
 			continue ;

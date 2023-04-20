@@ -48,12 +48,12 @@ int32_t	main(int ac, char **av)
 	t_render_params	*render_params;
 
 	if (ac != 2)
-		return (print_error(n_args_er), EXIT_FAILURE);
+		return (print_error(N_ARGS_ER), EXIT_FAILURE);
 	if (check_file(av[1]))
-		return (print_error(wrongfile), EXIT_FAILURE);
+		return (print_error(WRONGFILE), EXIT_FAILURE);
 	fd = open(av[1], 'r');
 	if (fd < 0)
-		return (print_error(wrongfile), EXIT_FAILURE);
+		return (print_error(WRONGFILE), EXIT_FAILURE);
 	render_params = render_params_new();
 	if (check_file_args(fd, render_params))
 		return (EXIT_FAILURE);

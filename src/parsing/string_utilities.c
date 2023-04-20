@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:47:14 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/19 17:29:48 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:48:29 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,4 @@ int	check_dot(char *str)
 		i++;
 	}
 	return (dots);
-}
-
-int	count_array(char **splitted)
-{
-	int	i;
-
-	i = 0;
-	while (splitted[i] != NULL)
-		i++;
-	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 18:46:02 by bde-meij          #+#    #+#             */
-/*   Updated: 2023/04/19 17:30:29 by bde-meij         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:48:16 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	*protec(void *ptr)
 {
 	if (ptr == NULL)
 	{
-		print_error(malloc_er);
-		exit(malloc_er);
+		print_error(MALLOC_ER);
+		exit(MALLOC_ER);
 	}
 	return (ptr);
 }
@@ -79,7 +79,7 @@ int	check_value_range(char *str, double min, double max, int expected_len)
 
 	dub_array = protec(ft_split(str, ','));
 	i = 0;
-	j = count_array(dub_array);
+	j = ft_dstrlen(dub_array);
 	if (j != expected_len)
 		return (1);
 	while (i < j)

@@ -13,13 +13,13 @@
 
 typedef enum error_codes
 {
-	n_args_er,
-	wrongfile,
-	outofrange,
-	object_er,
-	incomplete,
-	malloc_er,
-	null_arg
+	N_ARGS_ER,
+	WRONGFILE,
+	OUTOFRANGE,
+	OBJECT_ER,
+	INCOMPLETE,
+	MALLOC_ER,
+	NULL_ARG
 } t_parse_errors;
 
 typedef struct s_jump_table
@@ -49,7 +49,6 @@ int		check_plane(char **str, t_render_params *render_params);
 
 // string_utilities
 t_vec3	convert_array_to_vector(char *str);
-int		count_array(char **splitted);
 int		check_dot(char *str);
 
 #endif

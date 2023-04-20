@@ -40,16 +40,22 @@ void	hittable_array_destroy(t_hittable_array *array)
 t_hittable_array	*hittable_array_append(t_hittable_array **array, \
 	t_hittable *hittable)
 {
+	t_hittable	**tmp;
+
 	if (hittable == NULL)
 		return (hittable_array_destroy(*array), *array = NULL, NULL);
 	if ((*array)->size >= (*array)->capacity)
 	{
-		//TODO: fix memory problem
-		(*array)->hittables = ft_reallocf((*array)->hittables, \
+		tmp = (*array)->hittables;
+		(*array)->hittables = ft_realloc((*array)->hittables, \
 			(*array)->capacity * sizeof(t_hittable *), \
 			(*array)->capacity * 2 * sizeof(t_hittable *));
 		if (!(*array)->hittables)
+		{
+			(*array)->hittables = tmp;
 			return (hittable_array_destroy(*array), *array = NULL, NULL);
+		}
+		free(tmp);
 		(*array)->capacity *= 2;
 	}
 	(*array)->hittables[(*array)->size] = hittable;

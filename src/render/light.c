@@ -13,7 +13,7 @@ t_vec3	calculate_specular_light(const t_point_light *light, \
 	specular_factor = vec3_dot(&reflected, &hit_record->ray_direction);
 	if (specular_factor > 0)
 		color_scale(&specular_light, pow(specular_factor, \
-			hit_record->object->specular));
+			hit_record->material.specular));
 	else
 		color_scale(&specular_light, 0);
 	return (specular_light);

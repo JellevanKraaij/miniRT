@@ -1,14 +1,11 @@
 #ifndef HITTABLE_H
 # define HITTABLE_H
 
-# include <stdint.h>
 # include <vec3.h>
 # include <stdbool.h>
-# include <stddef.h>
 # include <stdarg.h>
 
 # include  "render/material.h"
-
 # include "render/ray.h"
 # include "render/hit_record.h"
 

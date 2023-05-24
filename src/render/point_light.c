@@ -1,6 +1,6 @@
 #include "render/point_light.h"
-#include "render/render.h"
 #include "render/light.h"
+#include "render/color.h"
 
 #include <stdlib.h>
 

@@ -1,4 +1,5 @@
 #include "render/hittable.h"
+#include <stddef.h>
 
 t_circle	circle_new(const t_vec3 center, const t_vec3 orientation, \
 	const double radius)

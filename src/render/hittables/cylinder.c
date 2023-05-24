@@ -1,6 +1,7 @@
 #include "render/hittable.h"
 
 #include <math.h>
+#include <stddef.h>
 
 t_cylinder	cylinder_new(const t_vec3 center, const t_vec3 orientation, \
 	const double radius, const double height)

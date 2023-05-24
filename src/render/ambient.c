@@ -1,5 +1,4 @@
 #include "render/ambient.h"
-#include "render/render.h"
 
 #include <stdlib.h>
 

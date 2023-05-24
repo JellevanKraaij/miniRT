@@ -1,5 +1,7 @@
 #include "render/light.h"
+#include "render/color.h"
 #include <math.h>
+
 
 t_vec3	calculate_specular_light(const t_point_light *light, \
 	const t_ray *light_ray, const t_hit_record *hit_record)

@@ -2,8 +2,7 @@
 #include <math.h>
 
 #include "render/render.h"
-#include "render/hittable.h"
-#include "render/light.h"
+#include "render/color.h"
 
 t_vec3	ray_to_color(const t_ray *ray, const t_hittable_array *hittables, \
 		const t_point_light *light, const t_ambient *ambient)

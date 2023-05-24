@@ -1,5 +1,6 @@
 #include "render/hittable.h"
 #include <math.h>
+#include <stddef.h>
 
 t_sphere	sphere_new(const t_vec3 center, const double radius)
 {

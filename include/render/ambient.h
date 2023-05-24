@@ -2,8 +2,6 @@
 # define AMBIENT_H
 
 # include <vec3.h>
-# include "ray.h"
-# include "color.h"
 
 typedef struct s_ambient
 {

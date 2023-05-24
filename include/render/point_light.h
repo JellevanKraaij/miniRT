@@ -3,7 +3,6 @@
 
 # include <vec3.h>
 # include "ray.h"
-# include "color.h"
 # include "hittable_array.h"
 
 typedef struct s_point_light

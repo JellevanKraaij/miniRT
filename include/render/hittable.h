@@ -9,7 +9,6 @@
 # include "render/ray.h"
 # include "render/hit_record.h"
 
-
 typedef struct s_sphere
 {
 	t_vec3	center;
@@ -22,6 +21,14 @@ typedef struct s_circle
 	t_vec3	orientation;
 	double	radius;
 }	t_circle;
+
+typedef struct s_pipe
+{
+	t_vec3	center;
+	t_vec3	orientation;
+	double	radius;
+	double	height;
+}	t_pipe;
 
 typedef struct s_plane
 {

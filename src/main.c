@@ -11,6 +11,19 @@
 
 #define MAX_RAY_PER_PIXEL 100
 
+t_render_params	*sample_config(void)
+{
+	t_render_params	*render_params;
+
+	render_params = render_params_new();
+	render_params->camera = camera_new(vec3_new(0, 0, 0), vec3_new(0, 0, 1), 70);
+	render_params->ambient = ambient_new(vec3_new(255, 255, 255), 0.5);
+	render_params->light = point_light_new(vec3_new(0, 0, 0), vec3_new(255, 255, 255), 0.7);
+	render_params->hittables = hittable_array_new(1);
+	hittable_array_append(&render_params->hittables, hittable_new(CIRCLE, material_new(vec3_new(255, 0, 0)), vec3_new(0, 0, 5), vec3_new(0, 0, 1), 0.5));
+	return (render_params);
+}
+
 void	init_hook_data(t_hook_data *hook_data, mlx_t *mlx, \
 t_render_params *render_params, mlx_image_t *img)
 {
@@ -40,21 +53,25 @@ t_render_params *render_params)
 
 int32_t	main(int ac, char **av)
 {
-	int				fd;
+	// int				fd;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_render_params	*render_params;
 
-	if (ac != 2)
-		return (print_error(N_ARGS_ER), EXIT_FAILURE);
-	if (check_file(av[1]))
-		return (print_error(WRONGFILE), EXIT_FAILURE);
-	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
-		return (print_error(WRONGFILE), EXIT_FAILURE);
-	render_params = render_params_new();
-	if (check_file_args(fd, render_params))
-		return (EXIT_FAILURE);
+	(void)ac;
+	(void)av;
+
+	// if (ac != 2)
+	// 	return (print_error(N_ARGS_ER), EXIT_FAILURE);
+	// if (check_file(av[1]))
+	// 	return (print_error(WRONGFILE), EXIT_FAILURE);
+	// fd = open(av[1], O_RDONLY);
+	// if (fd < 0)
+		// return (print_error(WRONGFILE), EXIT_FAILURE);
+	// render_params = render_params_new();
+	render_params = sample_config();
+	// if (check_file_args(fd, render_params))
+		// return (EXIT_FAILURE);
 	mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "MLX42", true);
 	img = mlx_new_image(mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!mlx)

@@ -22,6 +22,11 @@ t_render_params	*render_params_new(void)
 	if (render_params == NULL)
 		return (NULL);
 	render_params->hittables = hittable_array_new(10);
+	if (render_params->hittables == NULL)
+	{
+		free(render_params);
+		return (NULL);
+	}
 	return (render_params);
 }
 

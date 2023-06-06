@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   cone.c                                           :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: jvan-kra <jvan-kra@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2023/06/05 16:17:25 by jvan-kra      #+#    #+#                 */
-/*   Updated: 2023/06/05 16:17:25 by jvan-kra      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   cone.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bde-meij <bde-meij@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/06 11:18:14 by bde-meij          #+#    #+#             */
+/*   Updated: 2023/06/06 11:38:47 by bde-meij         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,29 @@
 #include <math.h>
 #include <stddef.h>
 
-t_cone	cone_new(const t_vec3 center, const t_vec3 orientation, \
-	const double radius, const double height)
-{
-	t_cone	cone;
-
-	cone.center = center;
-	cone.orientation = vec3_normalize(&orientation);
-	cone.radius = radius;
-	cone.height = height;
-	return (cone);
-}
-
-// void	initialize_cone_abc(const t_cone *cone, const t_ray *ray, \
-// t_abc_vars *abc_vars)
-// {
-// 	abc_vars->relative_raypos = vec3_subtract(&ray->origin, &cone->center);
-// 	abc_vars->a = vec3_dot(&ray->direction, &ray->direction) - \
-// 	vec3_dot(&ray->direction, &cone->orientation) * \
-// 	vec3_dot(&ray->direction, &cone->orientation);
-// 	abc_vars->b = 2 * (vec3_dot(&ray->direction, &abc_vars->relative_raypos) - \
-// 	(vec3_dot(&ray->direction, &cone->orientation) * \
-// 	vec3_dot(&abc_vars->relative_raypos, &cone->orientation)));
-// 	abc_vars->c = vec3_dot(&abc_vars->relative_raypos, \
-// 	&abc_vars->relative_raypos) - (vec3_dot(&abc_vars->relative_raypos, \
-// 	&cone->orientation) * vec3_dot(&abc_vars->relative_raypos, \
-// 	&cone->orientation)) - \
-// 	pow(cone->radius, 2);
-// 	abc_vars->discriminant = pow(abc_vars->b, 2) - (4 * \
-// 	abc_vars->a * abc_vars->c);
-// }
-
 void	initialize_cone_abc(const t_cone *cone, const t_ray *ray, \
 t_abc_vars *abc_vars)
 {
-	// double point = vec3_add(&cone->center, vec3_multiply(&cone->height, &cone->orientation))
-	double m = pow(cone->radius, 2) / pow(cone->height, 2);
-	// double h = vec3_subtract(&cone->center, &point);
-	// double w = vec3_subtract(&l, &h);
-	// double v = ray->direction;
+	double	m;
 
-	// abc_vars->a = pow(v, 2) - m * pow(v*h, 2) - pow(v*h, 2);
+	m = pow(cone->radius, 2) / vec3_dot(&cone->orientation, &cone->orientation);
+	abc_vars->relative_raypos = vec3_subtract(&ray->origin, &cone->center);
 	abc_vars->a = vec3_dot(&ray->direction, &ray->direction) - \
-	vec3_dot(&ray->direction, &cone->orientation) * \
-	vec3_dot(&ray->direction, &cone->orientation) * m - \
+	m * vec3_dot(&ray->direction, &cone->orientation) * \
+	vec3_dot(&ray->direction, &cone->orientation) - \
 	vec3_dot(&ray->direction, &cone->orientation) * \
 	vec3_dot(&ray->direction, &cone->orientation);
-
-	// t_vec3 lel = vec3_dot(vec3_dot(&v, &h), vec3_dot(&w, &h));
 	abc_vars->b = 2 * (vec3_dot(&ray->direction, &abc_vars->relative_raypos) - \
 	m * (vec3_dot(&ray->direction, &cone->orientation) * \
 	vec3_dot(&abc_vars->relative_raypos, &cone->orientation)) - \
 	(vec3_dot(&ray->direction, &cone->orientation) * \
 	vec3_dot(&abc_vars->relative_raypos, &cone->orientation)));
-
-	// abc_vars->c = w*w - m * pow(w*h, 2) - pow(w*h, 2);
 	abc_vars->c = vec3_dot(&abc_vars->relative_raypos, \
-	&abc_vars->relative_raypos) - (m * ((vec3_dot(&abc_vars->relative_raypos, \
+	&abc_vars->relative_raypos) - m * ((vec3_dot(&abc_vars->relative_raypos, \
 	&cone->orientation) * vec3_dot(&abc_vars->relative_raypos, \
-	&cone->orientation)))) - (vec3_dot(&abc_vars->relative_raypos, \
+	&cone->orientation))) - (vec3_dot(&abc_vars->relative_raypos, \
 	&cone->orientation) * vec3_dot(&abc_vars->relative_raypos, \
 	&cone->orientation));
-
 	abc_vars->discriminant = pow(abc_vars->b, 2) - (4 * \
 	abc_vars->a * abc_vars->c);
 }
@@ -134,14 +95,6 @@ bool	cone_height_hit( const t_cone *cone, const t_ray *ray, \
 		return (false);
 	return (true);
 }
-
-// C = Point at the center of the base of the cone
-// H = Point at the tip of the cone
-// r = Cone base radius
-// P = Point on the cone surface
-
-// L0 = Point on the line
-// v = Vector that defines the line direction
 
 bool	cone_hit(const t_cone *cone, const t_ray *ray, \
 	t_hit_record *hit_record)
